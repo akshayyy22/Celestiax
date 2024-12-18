@@ -1,0 +1,59 @@
+mod services;
+mod api;
+mod redis;
+
+use actix_cors::Cors;
+use actix_web::{web, App, HttpServer};
+use reqwest::Client as HttpClient; // Use alias for clarity
+use tokio::sync::broadcast; // Import broadcast module
+use ::redis::Client as RedisClient;
+
+#[derive(Clone)]
+struct AppState {
+    http_client: HttpClient,
+    redis_client: RedisClient,
+    tx: broadcast::Sender<String>, // Change Sender type to broadcast
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    // Initialize the HTTP client
+    let http_client = HttpClient::new();
+
+    // Initialize the Redis client
+    let redis_client = RedisClient::open("redis://127.0.0.1/").expect("Invalid Redis URL");
+
+    // Channel for communication between Redis subscriber and WebSocket
+    let (tx, _rx) = broadcast::channel(100); // Create a broadcast channel
+
+    // Spawn the Redis subscriber
+    let subscriber_tx = tx.clone();
+    tokio::spawn(async move {
+        if let Err(e) = redis::subscriber::subscribe_to_channel("transactions", subscriber_tx).await {
+            eprintln!("Failed to subscribe to Redis channel: {}", e);
+        }
+    });
+
+    // Start the HTTP server
+    HttpServer::new(move || {
+        let app_state = AppState {
+            http_client: http_client.clone(),
+            redis_client: redis_client.clone(),
+            tx: tx.clone(),
+        };
+
+        App::new()
+            .app_data(web::Data::new(app_state)) // Share app state
+            .wrap(
+                Cors::default()
+                    .allow_any_origin() // Allow all origins
+                    .allow_any_method() // Allow all HTTP methods (GET, POST, etc.)
+                    .allow_any_header() // Allow all headers
+                    .max_age(3600), // Cache the preflight response for 1 hour
+            )
+            .configure(api::routes::configure_routes) // Configure API routes
+    })
+    .bind("127.0.0.1:8080")? // Bind the server to localhost on port 8080
+    .run()
+    .await
+}

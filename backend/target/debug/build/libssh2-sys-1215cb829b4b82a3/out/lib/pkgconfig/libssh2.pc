@@ -1,0 +1,17 @@
+###########################################################################
+# libssh2 installation details
+###########################################################################
+
+prefix=/Users/akshay/Desktop/Projects/data universe/backend/target/debug/build/libssh2-sys-1215cb829b4b82a3/out
+exec_prefix=
+libdir=/Users/akshay/Desktop/Projects/data universe/backend/target/debug/build/libssh2-sys-1215cb829b4b82a3/out/lib
+includedir=/Users/akshay/Desktop/Projects/data universe/backend/target/debug/build/libssh2-sys-1215cb829b4b82a3/out/include
+
+Name: libssh2
+URL: https://www.libssh2.org/
+Description: Library for SSH-based communication
+Version: 1.9.0_DEV
+Requires.private: 
+Libs: -L${libdir} -lssh2 
+Libs.private: 
+Cflags: -I${includedir}
