@@ -1,21 +1,33 @@
-// app/page.tsx
-import React from 'react';
-import { Box } from "@mui/material";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
-import { useMemo } from "react";
-import { themeSettings } from "./theme";
+"use client";
 
-import Home from './pages/index';
+import React, { useState } from "react";
+import { motion } from "motion/react";
+import WorldMap from "@/app/components/WorldMapDemo";
+import HeaderDemo from "./components/Header";
+import CryptoButton from "@/app/components/CryptoButton";
 
 const Page: React.FC = () => {
-    const theme = useMemo(() => createTheme(themeSettings), []);
-    return (
-        <main>
-            <Home />
 
-        </main>
-    );
+  const [selectedCoin, setSelectedCoin] = useState<string>("bitcoin");
+
+  const coins = ["bitcoin", "ethereum", "algorand"];
+
+  return (
+    <main>
+      {/* Header Section */}
+     <HeaderDemo/>
+
+     <div className="py-4">
+        <CryptoButton coins={coins} onSelect={setSelectedCoin} />
+      </div>
+
+
+      {/* World Map Section */}
+      <div className="py-40 bg-black dark:bg-black">
+        <WorldMap />
+      </div>
+    </main>
+  );
 };
 
 export default Page;

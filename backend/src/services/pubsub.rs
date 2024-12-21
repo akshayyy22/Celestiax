@@ -11,3 +11,4 @@ pub async fn publish_to_channel(channel: &str, message: &str) -> RedisResult<()>
     // Return Ok with unit type
     Ok(())
 }
+

@@ -21,3 +21,4 @@ pub async fn publish_transactions(
     conn.publish::<&str, String, ()>(channel, transactions_json).await?;
     Ok(())
 }
+

@@ -1,8 +1,8 @@
 "use client";
 import { GlobeDemo } from "../components/Globedemo";
-import Dashboard from "../components/layout";
+import Dashboard from "../components/layout/Dashboard";
 import { useTheme } from "@mui/material/styles";
-import Visualization from "../components/visualizations/Visualization";
+import GraphVisualization from "../components/layout/3DGraphVisualization/Visualization";
 
 const Home = () => {
   const { palette } = useTheme();
@@ -12,21 +12,19 @@ const Home = () => {
         width: "100%", // Full viewport width
         backgroundColor: palette.background.default || "#000", // Theme background or fallback
         overflowX: "hidden", // Prevents horizontal scrolling
-        
       }}
     >
       <div
         style={{
           position: "relative", // Relative for child absolute positioning
-                    top: 0,
+          top: 0,
           left: 0,
           right: 0,
           bottom: 0,
           zIndex: 1, // Lower z-index for the background
         }}
       >
-        <GlobeDemo/>
-        
+        <GlobeDemo />
       </div>
       <div
         style={{
@@ -41,13 +39,18 @@ const Home = () => {
       >
         <Dashboard />
       </div>
-      <div style={{width: "100%",           minHeight: "100vh", // Ensure full screen height for visualization
+      <div
+        style={{
+          width: "100%",
+          minHeight: "100vh", // Ensure full screen height for visualization
           display: "flex", // Center align visualization
           justifyContent: "center",
-          alignItems: "center",}}>
-      <Visualization />
+          alignItems: "center",
+        }}
+      >
+        <GraphVisualization />
       </div>
-      </div>
+    </div>
   );
 };
 
