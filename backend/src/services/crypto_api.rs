@@ -1,8 +1,11 @@
 
 use reqwest::Client;
 use serde_json::Value;
-use crate::api::models::bitcoin::{BitcoinTransaction};
+use crate::api::models::bitcoin::BitcoinTransaction;
 use crate::api::models::bitcoin::{Block, Timestamp};
+
+use crate::api::models::ethereum::{EthereumTransaction, Block as EthereumBlock, Address, ToAddress, BlockTimestamp ,Currency , CreatedContract};
+
 
 const BITQUERY_URL: &str = "https://graphql.bitquery.io";
 
@@ -110,4 +113,145 @@ pub async fn fetch_bitcoin_data(
     } else {
         Err(format!("Failed with status: {}", response.status()))
     }
+}
+
+pub async fn fetch_ethereum_data(
+  network: &str,
+  limit: usize,
+  offset: usize,
+  from: &str,
+  till: &str,
+) -> Result<Vec<EthereumTransaction>, String> {
+  let client = Client::new();
+  let graphql_query = r#"
+  query ($network: EthereumNetwork!, $limit: Int!, $offset: Int!, $from: ISO8601DateTime, $till: ISO8601DateTime) {
+    ethereum(network: $network) {
+      transactions(
+        options: {desc: "block.height", limit: $limit, offset: $offset}
+        date: {since: $from, till: $till}
+      ) {
+        block {
+          timestamp {
+            time(format: "%Y-%m-%d %H:%M:%S")
+          }
+          height
+        }
+        sender {
+          address
+          annotation
+        }
+        hash
+        gasValue
+        gas_value_usd: gasValue(in: USD)
+        creates {
+          address
+        }
+        currency {
+          name
+        }
+        error
+        feePayer
+        gas
+        gasCurrency {
+          name
+          symbol
+        }
+        gasPrice
+        nonce
+        success
+        to {
+          address
+        }
+        txType
+      }
+    }
+  }
+  "#;
+
+  let variables = serde_json::json!({
+      "network": network,
+      "limit": limit,
+      "offset": offset,
+      "from": from,
+      "till": till,
+  });
+
+  let response = client
+      .post(BITQUERY_URL)
+      .header("Content-Type", "application/json")
+      .header("X-API-KEY", "BQY9SVcAV8wPippKsIcOqIXGV9GTZRa7") // Replace with your actual API key
+      .json(&serde_json::json!({ "query": graphql_query, "variables": variables }))
+      .send()
+      .await
+      .map_err(|e| format!("Request failed: {}", e))?;
+
+  if response.status().is_success() {
+      let data: Value = response.json().await.map_err(|e| format!("Failed to parse JSON: {}", e))?;
+
+
+      let transactions: Vec<EthereumTransaction> = data["data"]["ethereum"]["transactions"]
+          .as_array()
+          .ok_or("Unexpected response format: transactions not found")?
+          .iter()
+          .map(|tx| EthereumTransaction {
+              block: EthereumBlock {
+                  timestamp: BlockTimestamp {
+                      time: tx["block"]["timestamp"]["time"]
+                          .as_str()
+                          .unwrap_or_default()
+                          .to_string(),
+                  },
+                  height: tx["block"]["height"].as_u64().unwrap_or_default(),
+              },
+              address: tx["sender"]
+                  .as_object()
+                  .map(|a| Address {
+                      address: a["address"]
+                          .as_str()
+                          .unwrap_or_default()
+                          .to_string(),
+                      annotation: a["annotation"]
+                          .as_str()
+                          .map(|s| s.to_string()),
+                  }),
+              hash: tx["hash"].as_str().unwrap_or_default().to_string(),
+              gas_value: tx["gasValue"].as_f64(),
+              gas_value_usd: tx["gas_value_usd"].as_f64(),
+              creates: tx["creates"]
+                  .as_array()
+                  .and_then(|c| c.get(0)) // Assuming the first "creates" entry
+                  .and_then(|entry| entry["address"].as_str())
+                  .map(|s| CreatedContract {
+                      address: Some(s.to_string()),
+                  }),
+              currency: tx["currency"]
+                  .as_object()
+                  .and_then(|c| c["name"].as_str().map(|s| s.to_string()))
+                  .map(|name| Currency { name: Some(name) }),
+              error: tx["error"].as_str().map(|s| s.to_string()),
+              fee_payer: tx["feePayer"].as_str().unwrap_or_default().to_string(),
+              gas: tx["gas"].as_str().map(|s| s.to_string()),
+              gas_currency: tx["gasCurrency"]
+                  .as_object()
+                  .and_then(|gc| gc["name"].as_str().map(|s| s.to_string()))
+                  .unwrap_or_default(),
+              gas_price: tx["gasPrice"].as_u64().unwrap_or_default(),
+              nonce: tx["nonce"].as_u64(),
+              success: tx["success"].as_bool(),
+              to: tx["to"]
+                  .as_object()
+                  .and_then(|t| t["address"].as_str().map(|s| s.to_string()))
+                  .map(|address| ToAddress { address: Some(address) }),
+              tx_type: tx["txType"].as_str().unwrap_or_default().to_string(),
+          })
+          .collect();
+
+      if transactions.is_empty() {
+          Err("No transactions found in the specified time range".to_string())
+      } else {
+          Ok(transactions)
+      }
+  } else {
+      Err(format!("Request failed with status: {}", response.status()))
+  }
 }

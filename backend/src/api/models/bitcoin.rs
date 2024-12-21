@@ -1,15 +1,6 @@
 use serde::{Deserialize, Serialize};
 
 
-// #[derive(Debug, Deserialize)]
-// pub struct BitcoinQuery { // <- Add pub
-//     pub network: String,
-//     pub limit: Option<u32>,
-//     pub offset: Option<u32>,
-//     pub from: String,
-//     pub till: String,
-// }
-
 #[derive(Deserialize)]
 pub struct BitcoinQuery {
 
