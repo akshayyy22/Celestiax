@@ -2,17 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/app/lib/utils";
+import { useCryptoStore } from "@/app/hooks/useStore";
+import { useTheme } from "@mui/material/styles";
 
 export function TimeIndicator() {
+  const { selectedCrypto, cryptoTime, setCryptoTime } = useCryptoStore();
   const [mounted, setMounted] = useState(false);
-  const [time, setTime] = useState("");
   const [isBlinking, setIsBlinking] = useState(true);
+  const theme = useTheme();
 
   useEffect(() => {
     setMounted(true);
-    const updateTime = () => {
+
+    const updateCryptoTime = () => {
       const now = new Date();
-      setTime(
+      setCryptoTime(
         now.toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
@@ -21,8 +25,8 @@ export function TimeIndicator() {
       );
     };
 
-    updateTime(); // Initial update
-    const timer = setInterval(updateTime, 1000);
+    updateCryptoTime(); // Initial update
+    const timer = setInterval(updateCryptoTime, 1000);
     const blinker = setInterval(() => {
       setIsBlinking((prev) => !prev);
     }, 500);
@@ -31,9 +35,8 @@ export function TimeIndicator() {
       clearInterval(timer);
       clearInterval(blinker);
     };
-  }, []);
+  }, [setCryptoTime]);
 
-  // Don't render anything until after mounting to prevent hydration mismatch
   if (!mounted) {
     return (
       <div className="flex items-center gap-2">
@@ -46,15 +49,26 @@ export function TimeIndicator() {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="relative flex items-center gap-2 rounded-lg border bg-background px-3 py-1.5">
-        <span className="font-medium min-w-[85px]">{time}</span>
+      <div
+        className={cn(
+          "relative flex items-center gap-2 rounded-lg px-3 py-1.5 shadow-sm transition-all duration-300",
+          theme.palette.mode === "dark"
+            ? "border-gray-600 bg-gray-800"
+            : "border-gray-300 bg-white"
+        )}
+      >
         <div
           className={cn(
-            "h-2 w-2 rounded-full bg-primary transition-opacity duration-200",
-            isBlinking ? "opacity-100" : "opacity-0"
+            "h-4 w-4 rounded-full transition-opacity duration-500 ease-in-out",
+            isBlinking
+              ? "bg-teal-400 opacity-100 shadow-[0_0_10px_rgba(56,189,248,0.8)]"
+              : "bg-teal-400 opacity-20"
           )}
           aria-hidden="true"
         />
+        <span className="font-medium text-lg text-gray-300 min-w-[85px]">
+          {selectedCrypto}: {cryptoTime}
+        </span>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from "next-themes";
+import './global.css'
 
 import Script from 'next/script';
 

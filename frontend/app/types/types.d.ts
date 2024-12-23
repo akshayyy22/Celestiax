@@ -26,4 +26,78 @@ export type BitcoinTransaction = {
   tx_weight: number; // Updated from txWeight
 };
 
+export type EthereumTransaction = {
+  block: {
+    timestamp: {
+      time: string;
+    };
+    height: number;
+  };
+  address: {
+    address: string;
+    annotation?: string; // Optional annotation for the address
+  };
+  hash: string;
+  gas_value: number; // Renamed from gasValue
+  gas_value_usd: number; // Renamed from gas_value_usd
+  creates: {
+    address: string; // Address created by the transaction (if any)
+  };
+  currency: {
+    name: string; // Name of the currency (e.g., "Ether")
+    symbol?: string; // Optional symbol of the currency (e.g., "ETH")
+  };
+  error: string; // Empty if no error occurred
+  fee_payer: string; // Renamed from feePayer
+  gas: number; // Gas used in the transaction
+  gas_currency: {
+    name: string;
+    symbol?: string;
+  };
+  gas_price: number; // Renamed from gasPrice
+  nonce: number;
+  success: boolean;
+  to: {
+    address: string;
+  };
+  tx_type: string; // Renamed from txType
+};
+
+export type AlgorandTransaction = {
+  block: {
+    height: number;
+    timestamp: {
+      time: string;
+    };
+  };
+  currency: {
+    tokenType: string; // e.g., "asset"
+    tokenId: string; // Unique identifier for the asset
+    symbol: string; // Symbol of the asset, if applicable
+    name: string; // Name of the asset (e.g., "Vote Coin")
+    decimals: number; // Number of decimals for the asset
+    address: string; // Address associated with the asset, if applicable
+  };
+  fee: number; // Transaction fee in Algos
+  firstRound: number; // First round of the transaction
+  poolerror: string; // Error related to the pool, if any
+  note: string; // Optional note field for additional data
+  lastRound: number; // Last round of the transaction
+  index: number; // Index of the transaction within the block
+  hash: string; // Unique hash of the transaction
+  group: string; // Group identifier for atomic transactions, if applicable
+  genesisId: string; // Identifier for the network (e.g., "mainnet-v1.0")
+  genesisHash: string; // Hash of the genesis block for verification
+  subtype: string; // Subtype of the transaction (e.g., "send")
+  type: string; // Type of transaction (e.g., "axfer" for asset transfer)
+  sender: {
+    address: string; // Sender's address
+    annotation?: string | null; // Optional annotation for the sender's address
+  };
+};
+
+
+export type EthereumApiResponse = EthereumTransaction[];
 export type BitcoinApiResponse = BitcoinTransaction[];
+export type AlgorandApiResponse = AlgorandTransaction[];
+

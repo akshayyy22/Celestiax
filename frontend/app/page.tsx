@@ -2,30 +2,30 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import WorldMap from "@/app/components/WorldMapDemo";
-import HeaderDemo from "./components/Header";
-import CryptoButton from "@/app/components/CryptoButton";
+import WorldMap from "@/app/components/worldmapdemo";
+import HeaderDemo from "./components/header";
+import CryptoSelector from "@/app/components/CryptoButton";
+import { useCryptoStore } from "@/app/hooks/useStore"; // Import Zustand store
 
 const Page: React.FC = () => {
+  const { selectedCrypto } = useCryptoStore(); // Access the selectedCrypto from Zustand store
 
-  const [selectedCoin, setSelectedCoin] = useState<string>("bitcoin");
-
-  const coins = ["bitcoin", "ethereum", "algorand"];
+ 
 
   return (
     <main>
       {/* Header Section */}
      <HeaderDemo/>
 
-     <div className="py-4">
-        <CryptoButton coins={coins} onSelect={setSelectedCoin} />
-      </div>
-
-
       {/* World Map Section */}
       <div className="py-40 bg-black dark:bg-black">
         <WorldMap />
       </div>
+
+      <div className="py-4 p-6">
+        <CryptoSelector/>
+      </div>
+
     </main>
   );
 };

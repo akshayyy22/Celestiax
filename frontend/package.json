@@ -13,10 +13,12 @@
     "@emotion/styled": "^11.13.5",
     "@mui/material": "^6.1.10",
     "@mui/x-data-grid": "^7.23.1",
+    "@radix-ui/themes": "^3.1.6",
     "@react-three/drei": "^9.120.0",
     "@react-three/fiber": "^9.0.0-rc.1",
     "3d-force-graph": "^1.74.4",
     "axios": "^1.7.9",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotted-map": "^2.2.3",
     "framer-motion": "^11.13.1",
@@ -29,7 +31,9 @@
     "react-dom": "^19.0.0-rc-66855b96-20241106",
     "tailwind-merge": "^2.5.5",
     "three": "^0.171.0",
-    "three-globe": "^2.35.3"
+    "three-globe": "^2.35.3",
+    "use-debounce": "^10.0.4",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^20",
