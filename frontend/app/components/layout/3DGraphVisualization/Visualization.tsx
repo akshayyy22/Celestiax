@@ -104,11 +104,11 @@ const GraphVisualization: React.FC = () => {
             .graphData({ nodes: [], links: [] }) // Start with an empty graph
             .nodeLabel(config.nodeLabel)
             .nodeThreeObject((node: any) => {
-                const geometry = new SphereGeometry(1.5);
+                const geometry = new SphereGeometry(1, 8, 8); // Spheres with reduced detail
                 const material = new MeshStandardMaterial({
                     color: config.nodeColor,
                     emissive: config.nodeColor,
-                    emissiveIntensity: 0.7,
+                    emissiveIntensity: 0.5,
                 });
                 const sphere = new Mesh(geometry, material);
                 sphere.position.set(node.x, node.y, node.z);
@@ -116,45 +116,44 @@ const GraphVisualization: React.FC = () => {
                 return sphere;
             })
             .linkColor(() => "#888888")
-            .linkWidth(0.5)
+            .linkWidth(0.3) // Thinner links
             .linkOpacity(0.5);
     
         const bloomPass = new UnrealBloomPass(
             new Vector2(window.innerWidth, window.innerHeight),
-            1.5,
+            1.2, // Slightly lower strength for smoother rendering
             0.4,
-            0.85
+            0.8
         );
-        bloomPass.strength = 1.2;
-        bloomPass.radius = 0.4;
-        bloomPass.threshold = 0.1;
-    
         Graph.postProcessingComposer().addPass(bloomPass);
     
-        // Gradually add nodes and links
+        // Gradual rendering with delays
         let nodes = [...graphData.nodes];
         let links = [...graphData.links];
         let currentNodes: any[] = [];
         let currentLinks: any[] = [];
+        const batchSize = 20; // Number of nodes/links to add in each batch
+        const delay = 500; // Delay in milliseconds between batches
     
         const addDataStep = () => {
             if (nodes.length > 0) {
-                currentNodes.push(nodes.shift()!);
+                currentNodes.push(...nodes.splice(0, batchSize)); // Add batch of nodes
                 Graph.graphData({ nodes: currentNodes, links: currentLinks });
             }
     
             if (links.length > 0) {
-                currentLinks.push(links.shift()!);
+                currentLinks.push(...links.splice(0, batchSize)); // Add batch of links
                 Graph.graphData({ nodes: currentNodes, links: currentLinks });
             }
     
             if (nodes.length > 0 || links.length > 0) {
-                requestAnimationFrame(addDataStep);
+                setTimeout(addDataStep, delay); // Recursive call with delay
             }
         };
     
         addDataStep();
     };
+    
     
 
     useEffect(() => {

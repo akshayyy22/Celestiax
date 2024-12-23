@@ -4,7 +4,7 @@ use chrono::{Utc, Duration};
 use chrono_tz::Tz;
 
 pub async fn get_bitcoin_data(query: web::Query<crate::api::models::bitcoin::BitcoinQuery>) -> impl Responder {
-    let limit = query.limit.unwrap_or(100);
+    let limit = query.limit.unwrap_or(200);
     let offset = query.offset.unwrap_or(0);
     let network = query.network.clone().unwrap_or_else(|| "bitcoin".to_string());
 
