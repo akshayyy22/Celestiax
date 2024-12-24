@@ -95,9 +95,56 @@ export type AlgorandTransaction = {
     annotation?: string | null; // Optional annotation for the sender's address
   };
 };
+export type SearchApiResponse<T> = {
+  apiVersion: string;
+  requestId: string;
+  context: string;
+  data: {
+    limit: number;
+    offset: number;
+    total: number;
+    items: T[];
+  };
+};
+
+export type SearchBitcoinTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+
+export type SearchEthereumTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
 
 
 export type EthereumApiResponse = EthereumTransaction[];
 export type BitcoinApiResponse = BitcoinTransaction[];
 export type AlgorandApiResponse = AlgorandTransaction[];
+export type BitcoinApiResponseSearch = SearchApiResponse<SearchBitcoinTransaction>;
+export type EthereumApiResponseSearch = SearchApiResponse<SearchEthereumTransaction>;
+
+
 

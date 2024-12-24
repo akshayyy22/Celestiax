@@ -1,8 +1,10 @@
 import { Bitcoin } from "lucide-react";
 import { AlgorandIcon } from "./AlgorandIcon";
+import EthereumIcon from "./EthereumIcon";
+
 
 export const cryptoIcons = {
   bitcoin: Bitcoin,
-  ethereum: null,
+  ethereum: EthereumIcon,
   algorand: AlgorandIcon,
 } as const;

@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { BitcoinApiResponse ,  EthereumApiResponse , AlgorandApiResponse } from '../types/types';
+import { BitcoinApiResponse ,  EthereumApiResponse , AlgorandApiResponse ,   BitcoinApiResponseSearch, 
+  EthereumApiResponseSearch } from '../types/types';
 
 const BASE_URL = 'http://127.0.0.1:8080/api';
 
@@ -34,6 +35,28 @@ export const fetchEthereumTransactions = async (): Promise<EthereumApiResponse> 
       throw error;
     }
   };
+
+
+
+/**
+ * Fetch transactions for a specific blockchain and wallet address.
+ * @param blockchain - The blockchain to query (e.g., "bitcoin", "ethereum").
+ * @param address - The wallet address to search for transactions.
+ */
+export const fetchWalletTransactions = async (
+  blockchain: 'bitcoin' | 'ethereum' | 'algorand',
+  address: string
+): Promise<BitcoinApiResponseSearch | EthereumApiResponseSearch> => {
+  try {
+    const response = await axios.get<BitcoinApiResponseSearch | EthereumApiResponseSearch>(
+      `${BASE_URL}/transaction/${blockchain}/${address}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching transactions for ${blockchain} and address ${address}:`, error);
+    throw error;
+  }
+};
   
 
 
