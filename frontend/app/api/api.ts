@@ -38,27 +38,27 @@ export const fetchEthereumTransactions = async (): Promise<EthereumApiResponse> 
 
 
 
-/**
- * Fetch transactions for a specific blockchain and wallet address.
- * @param blockchain - The blockchain to query (e.g., "bitcoin", "ethereum").
- * @param address - The wallet address to search for transactions.
- */
+
 export const fetchWalletTransactions = async (
   blockchain: 'bitcoin' | 'ethereum' | 'algorand',
   address: string
-): Promise<BitcoinApiResponseSearch | EthereumApiResponseSearch> => {
+): Promise<EthereumApiResponseSearch | BitcoinApiResponseSearch > => {
   try {
-    const response = await axios.get<BitcoinApiResponseSearch | EthereumApiResponseSearch>(
+    const response = await axios.get<BitcoinApiResponseSearch | EthereumApiResponseSearch >(
       `${BASE_URL}/transaction/${blockchain}/${address}`
     );
+
+    // Validate if the response contains the expected structure
+    if (!response.data?.data?.items) {
+      throw new Error(`Unexpected API response structure for ${blockchain}`);
+    }
+
     return response.data;
   } catch (error) {
-    console.error(`Error fetching transactions for ${blockchain} and address ${address}:`, error);
+    console.error(
+      `Error fetching transactions for blockchain: ${blockchain}, address: ${address}`,
+      error
+    );
     throw error;
   }
 };
-  
-
-
-
-

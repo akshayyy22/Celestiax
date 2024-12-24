@@ -95,17 +95,6 @@ export type AlgorandTransaction = {
     annotation?: string | null; // Optional annotation for the sender's address
   };
 };
-export type SearchApiResponse<T> = {
-  apiVersion: string;
-  requestId: string;
-  context: string;
-  data: {
-    limit: number;
-    offset: number;
-    total: number;
-    items: T[];
-  };
-};
 
 export type SearchBitcoinTransaction = {
   transactionId: string;
@@ -138,6 +127,19 @@ export type SearchEthereumTransaction = {
     amount: string;
   }[];
 };
+
+export type SearchApiResponse<T> = {
+  apiVersion: string;
+  requestId: string;
+  context: string;
+  data: {
+    limit: number;
+    offset: number;
+    total: number;
+    items: T[];
+  };
+};
+
 
 
 export type EthereumApiResponse = EthereumTransaction[];
