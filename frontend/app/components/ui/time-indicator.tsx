@@ -51,10 +51,8 @@ export function TimeIndicator() {
     <div className="flex items-center gap-2">
       <div
         className={cn(
-          "relative flex items-center gap-2 rounded-lg px-3 py-1.5 shadow-sm transition-all duration-300",
-          theme.palette.mode === "dark"
-            ? "border-gray-600 bg-gray-800"
-            : "border-gray-300 bg-white"
+          "relative flex items-center gap-2 rounded-lg px-3 py-1.5 shadow-sm transition-all duration-300 border-gray-600 bg-gray-800",
+         
         )}
       >
         <div

@@ -1,19 +1,20 @@
-import React from 'react';
+
+
+import React, { useState } from 'react';
 import { Search, Loader } from 'lucide-react';
-import { useCryptoStore } from '@/app/hooks/useStore'; // Update with your zustand store path
 
 interface SearchBarProps {
-  onSearch: (crypto: string, time: string) => void;
+  onSearch: (query: string) => void;
   isLoading?: boolean;
 }
 
 export default function SearchBar({ onSearch, isLoading = false }: SearchBarProps) {
-  const { selectedCrypto, cryptoTime, setSelectedCrypto, setCryptoTime } = useCryptoStore();
+  const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedCrypto.trim()) {
-      onSearch(selectedCrypto.trim(), cryptoTime.trim());
+    if (query.trim()) {
+      onSearch(query.trim());
     }
   };
 
@@ -22,8 +23,8 @@ export default function SearchBar({ onSearch, isLoading = false }: SearchBarProp
       <div className="relative group">
         <input
           type="text"
-          value={selectedCrypto}
-          onChange={(e) => setSelectedCrypto(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="Search crypto ID..."
           className="w-64 px-4 py-2 pr-10 text-sm bg-black/40 border border-purple-500/30 rounded-lg 
                    text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50
@@ -42,7 +43,11 @@ export default function SearchBar({ onSearch, isLoading = false }: SearchBarProp
           )}
         </button>
       </div>
-      
+      {/* Search results animation container */}
+      <div className="absolute top-full left-0 right-0 mt-2 bg-black/80 border border-purple-500/30 
+                    rounded-lg backdrop-blur-sm hidden group-focus-within:block">
+        {/* Add search results here */}
+      </div>
     </form>
   );
 }

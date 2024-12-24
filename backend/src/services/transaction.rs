@@ -1,5 +1,6 @@
-use crate::api::models::transaction::TransactionData;
+use crate::api::models::transaction::{TransactionData, TransactionDataDetails}; // Ensure correct imports
 use reqwest::Client;
+
 pub async fn fetch_transactions(blockchain: &str, address: &str) -> TransactionData {
     let url = format!(
         "https://rest.cryptoapis.io/blockchain-data/{}/mainnet/addresses/{}/transactions?context=yourExampleString&limit=50&offset=0",
@@ -20,27 +21,36 @@ pub async fn fetch_transactions(blockchain: &str, address: &str) -> TransactionD
     let status = response.status();
     let response_text = response.text().await.expect("Failed to read response");
 
+    // Log the raw response for debugging
     println!("Raw API Response: {}", response_text);
 
     if status.is_success() {
-        serde_json::from_str::<TransactionData>(&response_text).unwrap_or_else(|err| {
-            eprintln!("Deserialization error: {}", err);
+        serde_json::from_str(&response_text).unwrap_or_else(|_| {
+            eprintln!("Failed to deserialize response into TransactionData");
             TransactionData {
-                api_version: None,
-                request_id: None,
-                context: Some("Failed to parse response".to_string()),
-                data: None,
-                raw_response: Some(response_text), // Pass raw response
+                api_version: "unknown".to_string(),
+                request_id: "unknown".to_string(),
+                context: "Failed to parse response".to_string(),
+                data: TransactionDataDetails {
+                    limit: 0,
+                    offset: 0,
+                    total: 0,
+                    items: vec![],
+                },
             }
         })
     } else {
         eprintln!("API returned error: {}", response_text);
         TransactionData {
-            api_version: None,
-            request_id: None,
-            context: Some("API request failed".to_string()),
-            data: None,
-            raw_response: Some(response_text), // Pass raw response
+            api_version: "unknown".to_string(),
+            request_id: "unknown".to_string(),
+            context: "API request failed".to_string(),
+            data: TransactionDataDetails {
+                limit: 0,
+                offset: 0,
+                total: 0,
+                items: vec![],
+            },
         }
     }
 }

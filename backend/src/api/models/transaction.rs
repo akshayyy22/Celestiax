@@ -1,95 +1,45 @@
-
-
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct TransactionData {
-    pub api_version: Option<String>,
-    pub request_id: Option<String>,
-    pub context: Option<String>,
-    pub data: Option<TransactionDataDetails>,
-    pub raw_response: Option<String>, // Include raw response for debugging
+    pub api_version: String,
+    pub request_id: String,
+    pub context: String,
+    pub data: TransactionDataDetails,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct TransactionDataDetails {
-    pub limit: Option<u32>,
-    pub offset: Option<u32>,
-    pub total: Option<u32>,
-    pub items: Option<Vec<TransactionItem>>,
+    pub limit: u64,
+    pub offset: u64,
+    pub total: u64,
+    pub items: Vec<Transaction>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct TransactionItem {
-    pub index: u32,
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
+pub struct Transaction {
+    pub transaction_id: String,
     pub mined_in_block_hash: String,
-    pub mined_in_block_height: u32,
-    pub recipients: Vec<Recipient>,
-    pub senders: Vec<Sender>,
+    pub mined_in_block_height: u64,
     pub timestamp: u64,
     pub transaction_hash: String,
-    pub transaction_id: String,
-    pub blockchain_specific: BlockchainSpecific,
-    pub fee: Fee,
+    pub recipients: Vec<Recipient>,
+    pub senders: Vec<Sender>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct Recipient {
     pub address: String,
     pub amount: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Deserialize, Serialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct Sender {
     pub address: String,
     pub amount: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct BlockchainSpecific {
-    pub locktime: u64,
-    pub size: u32,
-    pub v_size: u32,
-    pub version: u32,
-    pub vin: Vec<Vin>,
-    pub vout: Vec<Vout>,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Vin {
-    pub addresses: Vec<String>,
-    pub script_sig: ScriptSig,
-    pub sequence: String,
-    pub txid: String,
-    pub txinwitness: Vec<String>,
-    pub value: String,
-    pub vout: u32,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ScriptSig {
-    pub asm: String,
-    pub hex: String,
-    pub r#type: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Vout {
-    pub is_spent: bool,
-    pub script_pub_key: ScriptPubKey,
-    pub value: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ScriptPubKey {
-    pub addresses: Vec<String>,
-    pub asm: String,
-    pub hex: String,
-    pub r#type: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Fee {
-    pub amount: String,
-    pub unit: String,
 }
