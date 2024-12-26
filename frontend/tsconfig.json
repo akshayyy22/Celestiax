@@ -12,6 +12,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "types": ["styled-components"],
+
     "incremental": true,
     "plugins": [
       {

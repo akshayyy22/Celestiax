@@ -95,6 +95,17 @@ export type AlgorandTransaction = {
     annotation?: string | null; // Optional annotation for the sender's address
   };
 };
+export type SearchApiResponse<T> = {
+  apiVersion: string;
+  requestId: string;
+  context: string;
+  data: {
+    limit: number;
+    offset: number;
+    total: number;
+    items: T[];
+  };
+};
 
 export type SearchBitcoinTransaction = {
   transactionId: string;
@@ -128,25 +139,161 @@ export type SearchEthereumTransaction = {
   }[];
 };
 
-export type SearchApiResponse<T> = {
-  apiVersion: string;
-  requestId: string;
-  context: string;
-  data: {
-    limit: number;
-    offset: number;
-    total: number;
-    items: T[];
-  };
+export type SearchTronTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
 };
-
-
-
+export type SearchLitecoinTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+export type SearchBTCCASHTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+export type SearchDashTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+export type SearchDogeTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+export type SearchBNBSmartChainTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+export type SearchPolygonTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+export type SearchAvalancheTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
+export type SearchSolanaTransaction = {
+  transactionId: string;
+  minedInBlockHash: string;
+  minedInBlockHeight: number;
+  timestamp: number;
+  transactionHash: string;
+  recipients: {
+    address: string;
+    amount: string;
+  }[];
+  senders: {
+    address: string;
+    amount: string;
+  }[];
+};
 export type EthereumApiResponse = EthereumTransaction[];
 export type BitcoinApiResponse = BitcoinTransaction[];
 export type AlgorandApiResponse = AlgorandTransaction[];
-export type BitcoinApiResponseSearch = SearchApiResponse<SearchBitcoinTransaction>;
-export type EthereumApiResponseSearch = SearchApiResponse<SearchEthereumTransaction>;
 
-
-
+export type BitcoinApiResponseSearch =
+  SearchApiResponse<SearchBitcoinTransaction>;
+export type EthereumApiResponseSearch =
+  SearchApiResponse<SearchEthereumTransaction>;
+export type TronApiResponseSearch = SearchApiResponse<SearchTronTransaction>;
+export type LitecoinApiResponseSearch =
+  SearchApiResponse<SearchLitecoinTransaction>;
+export type BTCCASHApiResponseSearch =
+  SearchApiResponse<SearchBTCCASHTransaction>;
+export type DashApiResponseSearch = SearchApiResponse<SearchDashTransaction>;
+export type DogeApiResponseSearch = SearchApiResponse<SearchDogeTransaction>;
+export type BNBSmartChainApiResponseSearch =
+  SearchApiResponse<SearchBNBSmartChainTransaction>;
+export type PolygonApiResponseSearch =
+  SearchApiResponse<SearchPolygonTransaction>;
+export type AvalancheApiResponseSearch =
+  SearchApiResponse<SearchAvalancheTransaction>;
+export type SolanaApiResponseSearch =
+  SearchApiResponse<SearchSolanaTransaction>;

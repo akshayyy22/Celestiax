@@ -8,9 +8,11 @@ import { useCryptoStore } from "@/app/hooks/useStore";
 import { fetchWalletTransactions } from "@/app/api/api";
 import coinConfigs from "@/app/types/coinUtils";
 import { BitcoinTransaction } from "@/app/types/types";
-import { SearchBitcoinTransaction, SearchEthereumTransaction } from "@/app/types/types";
+import { SearchBitcoinTransaction, SearchEthereumTransaction , SearchTronTransaction} from "@/app/types/types";
 import { TimeIndicator } from "../../ui/time-indicator";
 import SearchBar from "@/app/components/ui/SearchBar";
+import Loader from "@/app/components/ui/loader"; // Import the Loader component
+import Load from "@/app/components/ui/load";
 
 const GraphVisualization: React.FC = () => {
     const [transactions, setTransactions] = useState<BitcoinTransaction[]>([]);
@@ -19,8 +21,15 @@ const GraphVisualization: React.FC = () => {
         selectedCrypto: keyof typeof coinConfigs;
     };
     const [graphData, setGraphData] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(false); // Loading state
+    const [showLoadIndicator, setShowLoadIndicator] = useState(true); // New state for load indicator visibility
+
+    const supportedCryptos = ["tron", "xrp", "litecoin", "bitcoincash", "dash", "doge", "bnbsmartchain", "polygon", "avalanche", "solana"];
 
     const handleSearch = async (walletId: string) => {
+        setIsLoading(true); // Show loader
+        setShowLoadIndicator(false); // Hide load indicator on search
+
         try {
             const blockchain = selectedCrypto;
             const fetchedTransactions = await fetchWalletTransactions(blockchain, walletId);
@@ -33,21 +42,29 @@ const GraphVisualization: React.FC = () => {
             }
         } catch (error) {
             console.error(`Error fetching transactions for wallet ID ${walletId}:`, error);
+        }finally {
+            setIsLoading(false); // Hide loader
         }
     };
 
+
     const loadTransactions = async () => {
         if (searchMode) return; // Prevent fetching transactions during search mode
+        setIsLoading(true); // Show loader
         try {
             const config = coinConfigs[selectedCrypto];
             const transactions = await config.fetchTransactions();
             processTransactions(transactions);
         } catch (error) {
             console.error(`Error loading ${selectedCrypto} transactions:`, error);
+        }finally {
+            setIsLoading(false); // Hide loader
         }
     };
 
-    const processSearchTransactions = (transactions: (SearchBitcoinTransaction | SearchEthereumTransaction)[]) => {
+    
+
+    const processSearchTransactions = (transactions: (SearchBitcoinTransaction | SearchEthereumTransaction | SearchTronTransaction)[]) => {
         const layers = Math.ceil(Math.sqrt(transactions.length));
         const nodesPerLayer = Math.ceil(transactions.length / layers);
 
@@ -196,17 +213,25 @@ const GraphVisualization: React.FC = () => {
         }
     }, [searchMode, graphData]);
 
-    return (
-        <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-            <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 10 }}>
-                <TimeIndicator />
-            </div>
-            <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 10 }}>
-                <SearchBar onSearch={handleSearch} />
-            </div>
-            <div id="3d-graph" style={{ width: "100%", height: "100%" }}></div>
-        </div>
-    );
-};
+    return ( 
+        <div> 
+            {isLoading ? ( <Loader /> ) : ( 
+                <div style={{ position: "relative", width: "100vw", height: "100vh" }}> 
+                    <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 10 }}> <TimeIndicator /> </div> 
+                    <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 10 }}> <SearchBar onSearch={handleSearch} /> </div> 
+
+                    {/* Display Search Wallet ID if selectedCrypto is supported */}
+                    {showLoadIndicator && supportedCryptos.includes(selectedCrypto) && (
+                        <div style={{ position: "relative", color: 'white' }}>
+                            <Load/>
+                        </div>
+                    )}
+
+                    <div id="3d-graph" style={{ width: "100%", height: "100%" }}></div> 
+                </div> 
+            )} 
+        </div> 
+    ); 
+}; 
 
 export default GraphVisualization;

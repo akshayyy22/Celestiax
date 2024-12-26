@@ -1,6 +1,6 @@
 // src/config/coinConfigs.ts
 
-import { fetchBitcoinTransactions, fetchEthereumTransactions, fetchAlgorandTransactions  } from "@/app/api/api";
+import { fetchBitcoinTransactions, fetchEthereumTransactions, fetchAlgorandTransactions , fetchWalletTransactions } from "@/app/api/api";
 
 const coinConfigs = {
     bitcoin: {
@@ -62,7 +62,14 @@ const coinConfigs = {
             </div>
         `,
         nodeColor: "#aaaaaa", // Algorand-themed color
+    },  
+    tron : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", // Algorand-themed color
+
     }
+
 };
 
 export default coinConfigs;

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Search, Loader } from 'lucide-react';
+import { useCryptoStore } from "@/app/hooks/useStore";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -10,6 +11,7 @@ interface SearchBarProps {
 
 export default function SearchBar({ onSearch, isLoading = false }: SearchBarProps) {
   const [query, setQuery] = useState('');
+  const { selectedCrypto } = useCryptoStore(); // Access Zustand store
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +27,7 @@ export default function SearchBar({ onSearch, isLoading = false }: SearchBarProp
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search crypto ID..."
+          placeholder="Search Wallet ID"
           className="w-64 px-4 py-2 pr-10 text-sm bg-black/40 border border-purple-500/30 rounded-lg 
                    text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500/50
                    transition-all duration-300 backdrop-blur-sm"
