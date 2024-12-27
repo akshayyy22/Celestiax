@@ -41,10 +41,10 @@ export default function CryptoSelector({ setLoading }: CryptoSelectorProps) {
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-slate-100 mb-2 flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-indigo-400" />
-          Market Analysis
+          Market Visualization
         </h2>
-        <p className="text-slate-400">
-          Select a cryptocurrency to visualize market trends and patterns
+        <p className="flex text-slate-400 items-start justify-start">
+        Select a cryptocurrency to visualize market trends as interactive nodes and connections
         </p>
       </div>
 
@@ -55,7 +55,7 @@ export default function CryptoSelector({ setLoading }: CryptoSelectorProps) {
           className="w-full sm:w-auto flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 transition-all duration-200"
         >
           <LineChart className="w-4 h-4" />
-          Generate Visualization
+          Visualize Interactive Nodes
         </Button>
       </div>
     </Card>

@@ -23,7 +23,6 @@ const GraphVisualization: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const [noTransactionsFound, setNoTransactionsFound] = useState(false); // New state for no transactions
 
-    const supportedCryptos = ["tron", "xrp", "litecoin", "bitcoincash", "dash", "doge", "bnbsmartchain", "polygon", "avalanche", "solana"];
 
 
     const handleSearch = async (walletId: string) => {
@@ -46,29 +45,25 @@ const GraphVisualization: React.FC = () => {
                 setNoTransactionsFound(true); // No transactions found
             }
         } catch (error) {
-            console.error(`Error fetching transactions for wallet ID ${walletId}:`, error);
             setNoTransactionsFound(true); // Treat as invalid wallet ID
         } finally {
             setIsLoading(false); // Hide loader
         }
     };
 
-
     const loadTransactions = async () => {
         if (searchMode) return; // Prevent fetching transactions during search mode
         setIsLoading(true); // Show loader
         try {
             const config = coinConfigs[selectedCrypto];
-            const transactions = await config.fetchTransactions();
-            processTransactions(transactions);
+            const transactions = await config.fetchTransactions(selectedCrypto,"");
+            processTransactions(transactions as any[]); // Ensure transactions is treated as an array
         } catch (error) {
-            // console.error(`Error loading ${selectedCrypto} transactions:`, error);
             setNoTransactionsFound(true); // Treat as invalid wallet ID
-        }finally {
+        } finally {
             setIsLoading(false); // Hide loader
         }
     };
-
     
 
     const processSearchTransactions = (transactions: (SearchBitcoinTransaction | SearchEthereumTransaction | SearchTronTransaction)[]) => {
@@ -87,12 +82,12 @@ const GraphVisualization: React.FC = () => {
                 y: 0,
                 z: layerIndex * 50,
                 label: `
-                    Transaction ID: ${tx.transactionId}
-                    Mined in Block Hash: ${tx.minedInBlockHash}
-                    Mined in Block Height: ${tx.minedInBlockHeight}
-                    Timestamp: ${new Date(tx.timestamp * 1000).toLocaleString()}
-                    Senders: ${tx.senders.map(s => `${s.address} (${s.amount})`).join(", ")}
-                    Recipients: ${tx.recipients.map(r => `${r.address} (${r.amount})`).join(", ")}
+                    Transaction ID: ${tx.transactionId} <br />
+                    Mined in Block Hash: ${tx.minedInBlockHash} <br />
+                    Mined in Block Height: ${tx.minedInBlockHeight} <br />
+                    Timestamp: ${new Date(tx.timestamp * 1000).toLocaleString()} <br />
+                    Senders: ${tx.senders.map(s => `${s.address} (${s.amount})`).join(", ")} <br />
+                    Recipients: ${tx.recipients.map(r => `${r.address} (${r.amount})`).join(", ")} <br />
                 `,
             };
         });
@@ -149,43 +144,42 @@ const GraphVisualization: React.FC = () => {
     const renderGraph = (updatedGraphData: any) => {
         const container = document.getElementById("3d-graph");
         if (!container || !updatedGraphData) return;
-
+    
         const config = coinConfigs[selectedCrypto];
-        const Graph = ForceGraph3D()(container)
-            .backgroundColor("#000003")
-            .graphData({ nodes: [], links: [] }) // Start with an empty graph
-            .nodeLabel((node: any) => node.label || config.nodeLabel(node)) // Use detailed label for search nodes
-            .nodeThreeObject((node: any) => {
-                const geometry = new SphereGeometry(1, 8, 8);
-                const material = new MeshStandardMaterial({
-                    color: config.nodeColor,
-                    emissive: config.nodeColor,
-                    emissiveIntensity: 0.5,
-                });
-                const sphere = new Mesh(geometry, material);
-                sphere.userData = { ...node.data };
-                return sphere;
-            })
-            .linkColor(() => "#888888")
-            .linkWidth(0.3)
-            .linkOpacity(0.5);
-
+        const Graph = new ForceGraph3D(container)
+          .backgroundColor("#000003")
+          .graphData({ nodes: [], links: [] }) // Start with an empty graph
+          .nodeLabel((node : any) => node.label || config.nodeLabel(node))
+          .nodeThreeObject((node : any) => {
+            const geometry = new SphereGeometry(1, 8, 8);
+            const material = new MeshStandardMaterial({
+              color: config.nodeColor,
+              emissive: config.nodeColor,
+              emissiveIntensity: 0.5,
+            });
+            const sphere = new Mesh(geometry, material);
+            sphere.userData = { ...node.data };
+            return sphere;
+          })
+          .linkColor(() => "#888888")
+          .linkWidth(0.3)
+          .linkOpacity(0.5);
+    
         const bloomPass = new UnrealBloomPass(
-            new Vector2(window.innerWidth, window.innerHeight),
-            1.2,
-            0.4,
-            0.8
+          new Vector2(window.innerWidth, window.innerHeight),
+          1.2,
+          0.4,
+          0.8
         );
         Graph.postProcessingComposer().addPass(bloomPass);
-
+    
         Graph.graphData(updatedGraphData);
 
-        // Gradual rendering with delays
         let nodes = [...graphData.nodes];
         let links = [...graphData.links];
         let currentNodes: any[] = [];
         let currentLinks: any[] = [];
-        const batchSize = 20; // Number of nodes/links to add in each batch
+        const batchSize = 100; // Number of nodes/links to add in each batch
         const delay = 500; // Delay in milliseconds between batches
     
         const addDataStep = () => {
@@ -205,8 +199,7 @@ const GraphVisualization: React.FC = () => {
         };
     
         addDataStep();
-    
-    };
+      };
 
     useEffect(() => {
         loadTransactions();

@@ -66,9 +66,65 @@ const coinConfigs = {
     tron : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", // Algorand-themed color
+        nodeColor: "#aaaaaa", 
 
-    }
+    },
+    xrp : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    litecoin : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    bitcoincash : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    dash : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    doge : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    bnbsmartchain : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    polygon : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    avalanche : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+    solana : {
+        fetchTransactions: fetchWalletTransactions,
+        nodeLabel: (node: any) => '' ,
+        nodeColor: "#aaaaaa", 
+
+    },
+
+
 
 };
 
