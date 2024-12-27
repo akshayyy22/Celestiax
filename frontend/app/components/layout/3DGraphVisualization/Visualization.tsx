@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import ForceGraph3D from "3d-force-graph";
 import { SphereGeometry, MeshStandardMaterial, Mesh, Vector2 } from "three";
@@ -22,27 +21,34 @@ const GraphVisualization: React.FC = () => {
     };
     const [graphData, setGraphData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(false); // Loading state
-    const [showLoadIndicator, setShowLoadIndicator] = useState(true); // New state for load indicator visibility
+    const [noTransactionsFound, setNoTransactionsFound] = useState(false); // New state for no transactions
 
     const supportedCryptos = ["tron", "xrp", "litecoin", "bitcoincash", "dash", "doge", "bnbsmartchain", "polygon", "avalanche", "solana"];
 
+
     const handleSearch = async (walletId: string) => {
         setIsLoading(true); // Show loader
-        setShowLoadIndicator(false); // Hide load indicator on search
+        setNoTransactionsFound(false); // Reset no transactions state
 
         try {
             const blockchain = selectedCrypto;
             const fetchedTransactions = await fetchWalletTransactions(blockchain, walletId);
 
-            if (fetchedTransactions?.data?.items && Array.isArray(fetchedTransactions.data.items)) {
+            if (
+                fetchedTransactions?.data?.items &&
+                Array.isArray(fetchedTransactions.data.items) &&
+                fetchedTransactions.data.items.length > 0
+            ) {
                 setSearchMode(true); // Enable search mode
+                setNoTransactionsFound(false); // Transactions found
                 processSearchTransactions(fetchedTransactions.data.items);
             } else {
-                console.error("Fetched transactions are not in the expected format:", fetchedTransactions);
+                setNoTransactionsFound(true); // No transactions found
             }
         } catch (error) {
             console.error(`Error fetching transactions for wallet ID ${walletId}:`, error);
-        }finally {
+            setNoTransactionsFound(true); // Treat as invalid wallet ID
+        } finally {
             setIsLoading(false); // Hide loader
         }
     };
@@ -56,7 +62,8 @@ const GraphVisualization: React.FC = () => {
             const transactions = await config.fetchTransactions();
             processTransactions(transactions);
         } catch (error) {
-            console.error(`Error loading ${selectedCrypto} transactions:`, error);
+            // console.error(`Error loading ${selectedCrypto} transactions:`, error);
+            setNoTransactionsFound(true); // Treat as invalid wallet ID
         }finally {
             setIsLoading(false); // Hide loader
         }
@@ -220,10 +227,11 @@ const GraphVisualization: React.FC = () => {
                     <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 10 }}> <TimeIndicator /> </div> 
                     <div style={{ position: "absolute", top: "10px", right: "10px", zIndex: 10 }}> <SearchBar onSearch={handleSearch} /> </div> 
 
-                    {/* Display Search Wallet ID if selectedCrypto is supported */}
-                    {showLoadIndicator && supportedCryptos.includes(selectedCrypto) && (
-                        <div style={{ position: "relative", color: 'white' }}>
-                            <Load/>
+                      {/* Show no transactions or invalid wallet message */}
+                      {noTransactionsFound && (
+                        <div style={{ position: "relative", color: "white", textAlign: "center" }}>
+                            <Load />
+                            {/* <p style={{ marginTop: "10px" }}>No transactions found or invalid wallet ID.</p> */}
                         </div>
                     )}
 

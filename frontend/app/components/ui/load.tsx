@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useCryptoStore } from "@/app/hooks/useStore";
 
 const Load = () => {
+  const { selectedCrypto } = useCryptoStore(); // Access Zustand store
+
   return (
     <StyledWrapper>
       <div className="loader">
-        <div className="simple-text">Search Wallet ID!</div>
+        <div className="simple-text">No Transaction was Found && Search  Wallet ID!</div>
         <div className="cube">
           <div className="face middle front">
             <div className="cube cube-front">
