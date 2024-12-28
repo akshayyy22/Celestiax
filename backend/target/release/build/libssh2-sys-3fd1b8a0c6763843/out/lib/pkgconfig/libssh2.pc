@@ -1,0 +1,17 @@
+###########################################################################
+# libssh2 installation details
+###########################################################################
+
+prefix=/Users/akshay/Desktop/Projects/Celestiax/backend/target/release/build/libssh2-sys-3fd1b8a0c6763843/out
+exec_prefix=
+libdir=/Users/akshay/Desktop/Projects/Celestiax/backend/target/release/build/libssh2-sys-3fd1b8a0c6763843/out/lib
+includedir=/Users/akshay/Desktop/Projects/Celestiax/backend/target/release/build/libssh2-sys-3fd1b8a0c6763843/out/include
+
+Name: libssh2
+URL: https://www.libssh2.org/
+Description: Library for SSH-based communication
+Version: 1.9.0_DEV
+Requires.private: 
+Libs: -L${libdir} -lssh2 
+Libs.private: 
+Cflags: -I${includedir}

@@ -1,1 +1,1 @@
-web: cargo run --release
+web: cargo run --release --bind 0.0.0.0:$PORT
