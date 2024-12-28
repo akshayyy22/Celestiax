@@ -2,6 +2,9 @@ use crate::api::models::bitcoin::BitcoinTransaction;
 use crate::api::models::bitcoin::{Block, Timestamp};
 use reqwest::Client;
 use serde_json::Value;
+use std::env;
+use dotenv::dotenv;
+
 
 use crate::api::models::ethereum::{
     Address, Block as EthereumBlock, BlockTimestamp, CreatedContract, Currency,
@@ -23,6 +26,11 @@ pub async fn fetch_bitcoin_data(
     from: &str,
     till: &str,
 ) -> Result<Vec<BitcoinTransaction>, String> {
+    dotenv().ok(); // Load environment variables from the .env file
+    let api_key = env::var("BITQUERY_API_KEY")
+        .map_err(|_| "Missing BITQUERY_API_KEY in environment variables".to_string())?;
+
+
     let client = Client::new();
     let graphql_query = r#"
     query ($network: BitcoinNetwork!, $limit: Int!, $offset: Int!, $from: ISO8601DateTime, $till: ISO8601DateTime) {
@@ -72,7 +80,7 @@ pub async fn fetch_bitcoin_data(
     let response = client
         .post(BITQUERY_URL)
         .header("Content-Type", "application/json")
-        .header("X-API-KEY", "BQY9SVcAV8wPippKsIcOqIXGV9GTZRa7")
+        .header("X-API-KEY", api_key)
         .json(&serde_json::json!({ "query": graphql_query, "variables": variables }))
         .send()
         .await
@@ -129,6 +137,10 @@ pub async fn fetch_ethereum_data(
     from: &str,
     till: &str,
 ) -> Result<Vec<EthereumTransaction>, String> {
+    dotenv().ok(); // Load environment variables from the .env file
+    let api_key = env::var("BITQUERY_API_KEY")
+        .map_err(|_| "Missing BITQUERY_API_KEY in environment variables".to_string())?;
+
     let client = Client::new();
     let graphql_query = r#"
   query ($network: EthereumNetwork!, $limit: Int!, $offset: Int!, $from: ISO8601DateTime, $till: ISO8601DateTime) {
@@ -186,7 +198,7 @@ pub async fn fetch_ethereum_data(
     let response = client
         .post(BITQUERY_URL)
         .header("Content-Type", "application/json")
-        .header("X-API-KEY", "BQY9SVcAV8wPippKsIcOqIXGV9GTZRa7") // Replace with your actual API key
+        .header("X-API-KEY", api_key) // Replace with your actual API key
         .json(&serde_json::json!({ "query": graphql_query, "variables": variables }))
         .send()
         .await

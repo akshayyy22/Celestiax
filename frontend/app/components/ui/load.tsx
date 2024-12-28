@@ -8,7 +8,7 @@ const Load = () => {
   return (
     <StyledWrapper>
       <div className="loader">
-        <div className="simple-text">No Transaction was Found && Search  Wallet ID!</div>
+        <div className="simple-text">No transactions found. Please search using a valid {selectedCrypto} Wallet ID!</div>
         <div className="cube">
           <div className="face middle front">
             <div className="cube cube-front">
@@ -93,10 +93,14 @@ justify-content: center;
 
   .simple-text {
     position: absolute;
-    top: -100px;
+    top: -150px;
     color: white;
     width: 200px;
     text-align: center;
+    font-weight: bold; /* Bold text */
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
   }
 
   .cube {

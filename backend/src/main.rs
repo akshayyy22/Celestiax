@@ -7,6 +7,7 @@ use actix_web::{web, App, HttpServer};
 use reqwest::Client as HttpClient; // Use alias for clarity
 use tokio::sync::broadcast; // Import broadcast module
 use ::redis::Client as RedisClient;
+// use tracing::info;
 
 #[derive(Clone)]
 struct AppState {
@@ -17,11 +18,18 @@ struct AppState {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    // Initialize logging
+    // tracing_subscriber::fmt::init();
+
+    // Read environment variables
+    let redis_url = std::env::var("REDIS_URL").expect("REDIS_URL must be set");
+    let port = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+
     // Initialize the HTTP client
     let http_client = HttpClient::new();
 
     // Initialize the Redis client
-    let redis_client = RedisClient::open("redis://127.0.0.1/").expect("Invalid Redis URL");
+    let redis_client = RedisClient::open(redis_url).expect("Invalid Redis URL");
 
     // Channel for communication between Redis subscriber and WebSocket
     let (tx, _rx) = broadcast::channel(100); // Create a broadcast channel
@@ -33,6 +41,8 @@ async fn main() -> std::io::Result<()> {
             eprintln!("Failed to subscribe to Redis channel: {}", e);
         }
     });
+
+    // info!("Starting server on port {}", port);
 
     // Start the HTTP server
     HttpServer::new(move || {
@@ -53,7 +63,7 @@ async fn main() -> std::io::Result<()> {
             )
             .configure(api::routes::configure_routes) // Configure API routes
     })
-    .bind("127.0.0.1:8080")? // Bind the server to localhost on port 8080
+    .bind(format!("0.0.0.0:{}", port))? // Bind to the Render-provided port
     .run()
     .await
 }

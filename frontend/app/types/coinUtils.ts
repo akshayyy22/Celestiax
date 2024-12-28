@@ -1,5 +1,3 @@
-// src/config/coinConfigs.ts
-
 import { fetchBitcoinTransactions, fetchEthereumTransactions, fetchAlgorandTransactions , fetchWalletTransactions } from "@/app/api/api";
 
 const coinConfigs = {
@@ -9,7 +7,7 @@ const coinConfigs = {
             <div>
                 <strong>Hash:</strong> ${node.data?.hash || "N/A"} <br />
                 <strong>Block Height:</strong> ${node.data?.block?.height || "N/A"} <br />
-                <strong>Timestamp:</strong> ${node.data?.block?.timestamp?.time || "N/A"} <br />
+                <strong>Timestamp:</strong> ${node.data?.block?.timestamp?.time || "N/A"} UTC <br />
                 <strong>Inputs (USD):</strong> $${node.data?.input_value_usd.toFixed(2) || "N/A"} <br />
                 <strong>Input Count:</strong> ${node.data?.input_count || "N/A"} <br />
                 <strong>Output Count:</strong> ${node.data?.output_count || "N/A"} <br />
@@ -25,7 +23,7 @@ const coinConfigs = {
                 <strong>Locktime:</strong> ${node.data?.tx_locktime || "N/A"}<br />
             </div>
         `,
-        nodeColor: "#ffcc00", // Bitcoin-themed color
+        nodeColor: "#f2a900", // Gold-orange for Bitcoin
     },
     ethereum: {
         fetchTransactions: fetchEthereumTransactions,
@@ -33,7 +31,7 @@ const coinConfigs = {
             <div>
                 <strong>Transaction Hash:</strong> ${node.data?.hash || "N/A"} <br />
                 <strong>Block Height:</strong> ${node.data?.block?.height || "N/A"} <br />
-                <strong>Timestamp:</strong> ${node.data?.block?.timestamp?.time || "N/A"} <br />
+                <strong>Timestamp:</strong> ${node.data?.block?.timestamp?.time || "N/A"} UTC <br />
                 <strong>From Address:</strong> ${node.data?.address?.address || "N/A"} <br />
                 <strong>To Address:</strong> ${node.data?.to?.address || "N/A"} <br />
                 <strong>Gas Used:</strong> ${node.data?.gas || "N/A"} <br />
@@ -44,7 +42,7 @@ const coinConfigs = {
                 <strong>Error:</strong> ${node.data?.error || "None"}<br />
             </div>
         `,
-        nodeColor: "#3c3cfc", // Ethereum-themed color
+        nodeColor: "#627eea", // Blue-violet for Ethereum
     },
     algorand: {
         fetchTransactions: fetchAlgorandTransactions,
@@ -52,7 +50,7 @@ const coinConfigs = {
             <div>
                 <strong>Transaction Hash:</strong> ${node.data?.hash || "N/A"} <br />
                 <strong>Block Height:</strong> ${node.data?.block?.height || "N/A"} <br />
-                <strong>Timestamp:</strong> ${node.data?.block?.timestamp?.time || "N/A"} <br />
+                <strong>Timestamp:</strong> ${node.data?.block?.timestamp?.time || "N/A"} UTC <br />
                 <strong>Sender Address:</strong> ${node.data?.sender?.address || "N/A"} <br />
                 <strong>Token Name:</strong> ${node.data?.currency?.name || "N/A"} <br />
                 <strong>Token ID:</strong> ${node.data?.currency?.tokenId || "N/A"} <br />
@@ -61,71 +59,52 @@ const coinConfigs = {
                 <strong>Error Message:</strong> ${node.data.poolerror || "None"}<br />
             </div>
         `,
-        nodeColor: "#aaaaaa", // Algorand-themed color
+        nodeColor: "#00aa99", // Teal for Algorand
     },  
     tron : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
-
-    },
-    xrp : {
-        fetchTransactions: fetchWalletTransactions,
-        nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
-
+        nodeColor: "#eb0029" // Red for Tron
     },
     litecoin : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
-
+        nodeColor: "#bfbbbb" // Silver for Litecoin
     },
-    bitcoincash : {
+    "bitcoin-cash" : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
-
+        nodeColor: "#8dc351" // Green for Bitcoin Cash
     },
     dash : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
-
+        nodeColor: "#1c75bc" // Blue for Dash
     },
-    doge : {
+    dogecoin : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
-
+        nodeColor: "#c3a634" // Gold-brown for Dogecoin
     },
-    bnbsmartchain : {
+    "binance-smart-chain" : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
+        nodeColor: "#f3ba2f" // Yellow for Binance Smart Chain
 
     },
     polygon : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
+        nodeColor: "#8247e5"  // Purple for Polygon
 
     },
     avalanche : {
         fetchTransactions: fetchWalletTransactions,
         nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
+        nodeColor: "#e84142" // Red for Avalanche
+
 
     },
-    solana : {
-        fetchTransactions: fetchWalletTransactions,
-        nodeLabel: (node: any) => '' ,
-        nodeColor: "#aaaaaa", 
-
-    },
-
-
-
 };
 
 export default coinConfigs;

@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-      <footer className="w-full mt-auto pt-16 pb-8 bg-gradient-to-t bg-black">
+      <footer className="w-full mt-auto pt-16 pb-8 bg-gradient-to-t bg-base-100">
         <div className="max-w-7xl px-8 mx-auto">
           <div className="mx-auto border-t border-gray-700 pt-6">
             <div className="flex justify-between items-center text-sm text-gray-400 px-2">
@@ -17,7 +17,7 @@ export default function Footer() {
                 {" • "}
                 Powered by{" "}
                 <a
-                  href="https://ffmpeg.org/"
+                  href="https://vasturiano.github.io/3d-force-graph/"
                   className="hover:text-gray-200 font-bold border-b border-dotted border-current"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -26,7 +26,7 @@ export default function Footer() {
                 </a>
                 {" & "}
                 <a
-                  href="https://gource.io/"
+                  href="https://nextjs.org/"
                   className="hover:text-gray-200 font-bold border-b border-dotted border-current"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -36,7 +36,7 @@ export default function Footer() {
               </p>
               <div className="flex items-center gap-4">
                 <a
-                  href="https://twitter.com/sabziz"
+                  href="https://x.com/akshayyy22"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Twitter"
@@ -52,7 +52,7 @@ export default function Footer() {
                   </svg>
                 </a>
                 <a
-                  href="https://github.com/3eif/gitsight"
+                  href="https://github.com/akshayyy22"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"

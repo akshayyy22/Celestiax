@@ -34,7 +34,7 @@ const VideoItem = ({
         >
           {title}
         </a>
-        <span className="text-sm text-gray-400">{commits} commits</span>
+        <span className="text-sm text-gray-400">{commits} transactions per day</span>
       </div>
     </div>
   );
@@ -44,36 +44,36 @@ const VideoItem = ({
       src: "/example-generations/apple_swift.mp4",
       poster: "/example-generations/apple_swift.png",
       title: "Bitcoin",
-      repoUrl: "https://github.com/apple/swift",
-      commits: "170,000+",
+      repoUrl: "https://bitcoin.org/en/",
+      commits: "393,242+",
     },
     {
       src: "/example-generations/serenityos_serenity.mp4",
       poster: "/example-generations/serenityos_serenity.png",
       title: "Ethereum",
-      repoUrl: "https://github.com/SerenityOS/serenity",
-      commits: "62,000+",
+      repoUrl: "https://ethereum.org/en/",
+      commits: "1.1 billion",
     },
     {
       src: "/example-generations/facebook_react.mp4",
       poster: "/example-generations/facebook_react.png",
       title: "XRP",
-      repoUrl: "https://github.com/facebook/react",
-      commits: "19,000+",
+      repoUrl: "https://xrpl.org/",
+      commits: "1.4 million",
     },
     {
       src: "/example-generations/3eif_gitmotion.mp4",
       poster: "/example-generations/3eif_gitmotion.png",
       title: "Tron",
-      repoUrl: "https://github.com/3eif/gitmotion",
-      commits: "90+",
+      repoUrl: "https://trondao.org/",
+      commits: "6 million",
     },
   ];
   
   export default function ExampleGenerations() {
     return (
       <div className="flex flex-col mx-auto w-full pt-11 space-y-5">
-        <h2 className="text-2xl font-semibold text-left">Example Generations</h2>
+        <h2 className="text-2xl font-semibold text-left">Example Visualization</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
           {videos.map((video, index) => (
             <VideoItem key={index} {...video} />

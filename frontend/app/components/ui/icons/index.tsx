@@ -1,7 +1,18 @@
 import { Bitcoin } from "lucide-react";
-import { AlgorandIcon , XRP , Tron , Polygon , Litecoin ,  BitcoinCash , Dash , Doge , BNBSmartChain,Avalanche,Solana } from "./AlgorandIcon";
+import {
+  AlgorandIcon,
+  XRP,
+  Tron,
+  Polygon,
+  Litecoin,
+  BitcoinCash,
+  Dash,
+  Doge,
+  BNBSmartChain,
+  Avalanche,
+  Solana,
+} from "./AlgorandIcon";
 import EthereumIcon from "./EthereumIcon";
-
 
 export const cryptoIcons = {
   bitcoin: Bitcoin,
@@ -10,14 +21,11 @@ export const cryptoIcons = {
   tron: Tron,
   xrp: XRP,
   litecoin: Litecoin,
-  bitcoincash: BitcoinCash,
+  "bitcoin-cash": BitcoinCash,
   dash: Dash,
-  doge: Doge,
-  bnbsmartchain: BNBSmartChain,
+  dogecoin: Doge,
+  "binance-smart-chain": BNBSmartChain,
   polygon: Polygon,
-  // arbitrum:,
-  // optimism:,
-  // base:,
   avalanche: Avalanche,
   solana: Solana,
 } as const;

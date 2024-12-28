@@ -259,21 +259,7 @@ export type SearchAvalancheTransaction = {
     amount: string;
   }[];
 };
-export type SearchSolanaTransaction = {
-  transactionId: string;
-  minedInBlockHash: string;
-  minedInBlockHeight: number;
-  timestamp: number;
-  transactionHash: string;
-  recipients: {
-    address: string;
-    amount: string;
-  }[];
-  senders: {
-    address: string;
-    amount: string;
-  }[];
-};
+
 export type EthereumApiResponse = EthereumTransaction[];
 export type BitcoinApiResponse = BitcoinTransaction[];
 export type AlgorandApiResponse = AlgorandTransaction[];
@@ -295,5 +281,4 @@ export type PolygonApiResponseSearch =
   SearchApiResponse<SearchPolygonTransaction>;
 export type AvalancheApiResponseSearch =
   SearchApiResponse<SearchAvalancheTransaction>;
-export type SolanaApiResponseSearch =
-  SearchApiResponse<SearchSolanaTransaction>;
+

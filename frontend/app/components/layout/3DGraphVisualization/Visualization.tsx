@@ -167,9 +167,9 @@ const GraphVisualization: React.FC = () => {
     
         const bloomPass = new UnrealBloomPass(
           new Vector2(window.innerWidth, window.innerHeight),
-          1.2,
-          0.4,
-          0.8
+          1.5,
+          0.6,
+          0.1
         );
         Graph.postProcessingComposer().addPass(bloomPass);
     

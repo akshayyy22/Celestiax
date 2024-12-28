@@ -27,18 +27,13 @@ export function CryptoDropdown({ value, onValueChange }: CryptoDropdownProps) {
           { id: "ethereum", name: "Ethereum", symbol: "ETH" },
           { id: "algorand", name: "Algorand", symbol: "ALGO" },
           { id: "tron", name: "Tron", symbol: "TRX" },
-          { id: "xrp", name: "XRP", symbol: "XRP" },
           { id: "litecoin", name: "Litecoin", symbol: "LTC" },
-          { id: "bitcoincash", name: "Bitcoin Cash", symbol: "BTC" },
+          { id: "bitcoin-cash", name: "Bitcoin Cash", symbol: "BTC" },
           { id: "dash", name: "Dash", symbol: "DASH" },
-          { id: "doge", name: "Doge", symbol: "DOGE" },
-          { id: "bnbsmartchain", name: "BNB Smart Chain", symbol: "BNB" },
+          { id: "dogecoin", name: "Doge", symbol: "DOGE" },
+          { id: "binance-smart-chain", name: "BNB Smart Chain", symbol: "BNB" },
           { id: "polygon", name: "Polygon", symbol: "MATIC" },
-          // { id: "arbitrum", name: "Arbitrum", symbol: "BTC" },
-          // { id: "optimism", name: "Optimism", symbol: "ETH" },
-          // { id: "base", name: "Base", symbol: "ALGO" },
           { id: "avalanche ", name: "Avalanche", symbol: "AAVE" },
-          { id: "solana", name: "Solana", symbol: "SOL" },
          
         ].map((crypto) => (
           <SelectItem

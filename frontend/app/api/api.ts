@@ -13,7 +13,7 @@ import {
   BNBSmartChainApiResponseSearch,
   PolygonApiResponseSearch,
   AvalancheApiResponseSearch,
-  SolanaApiResponseSearch,
+
 } from "../types/types";
 
 const BASE_URL = "http://127.0.0.1:8080/api";
@@ -39,7 +39,6 @@ export const fetchEthereumTransactions =
       );
       return response.data; // No need to access 'bitcoin.transactions'
     } catch (error) {
-      console.error("Error fetching Ethereum transactions:", error);
       throw error;
     }
   };
@@ -63,15 +62,14 @@ export const fetchWalletTransactions = async (
     | "ethereum"
     | "algorand"
     | "tron"
-    | "xrp"
     | "litecoin"
-    | "bitcoincash"
+    | "bitcoin-cash"
     | "dash"
-    | "doge"
-    | "bnbsmartchain"
+    | "dogecoin"
+    | "binance-smart-chain"
     | "polygon"
-    | "avalanche"
-    | "solana",
+    | "avalanche",
+ 
   address: string
 ): Promise<
   | EthereumApiResponseSearch
@@ -84,21 +82,19 @@ export const fetchWalletTransactions = async (
   | BNBSmartChainApiResponseSearch
   | PolygonApiResponseSearch
   | AvalancheApiResponseSearch
-  | SolanaApiResponseSearch
 > => {
   try {
     const response = await axios.get<
-      | EthereumApiResponseSearch
-      | BitcoinApiResponseSearch
-      | TronApiResponseSearch
-      | LitecoinApiResponseSearch
-      | BTCCASHApiResponseSearch
-      | DashApiResponseSearch
-      | DogeApiResponseSearch
-      | BNBSmartChainApiResponseSearch
-      | PolygonApiResponseSearch
-      | AvalancheApiResponseSearch
-      | SolanaApiResponseSearch
+    | EthereumApiResponseSearch
+    | BitcoinApiResponseSearch
+    | TronApiResponseSearch
+    | LitecoinApiResponseSearch
+    | BTCCASHApiResponseSearch
+    | DashApiResponseSearch
+    | DogeApiResponseSearch
+    | BNBSmartChainApiResponseSearch
+    | PolygonApiResponseSearch
+    | AvalancheApiResponseSearch
     >(`${BASE_URL}/transaction/${blockchain}/${address}`);
 
     // Validate if the response contains the expected structure
@@ -108,10 +104,7 @@ export const fetchWalletTransactions = async (
 
     return response.data;
   } catch (error) {
-    console.error(
-      `Error fetching transactions for blockchain: ${blockchain}, address: ${address}`,
-      error
-    );
+   
     throw error;
   }
 };
