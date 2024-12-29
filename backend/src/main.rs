@@ -8,6 +8,7 @@ use reqwest::Client as HttpClient; // Use alias for clarity
 use tokio::sync::broadcast; // Import broadcast module
 use ::redis::Client as RedisClient;
 use tracing::info;
+use std::env;
 
 #[derive(Clone)]
 struct AppState {
