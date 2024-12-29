@@ -7,7 +7,7 @@ use actix_web::{web, App, HttpServer};
 use reqwest::Client as HttpClient; // Use alias for clarity
 use tokio::sync::broadcast; // Import broadcast module
 use ::redis::Client as RedisClient;
-// use tracing::info;
+use tracing::info;
 
 #[derive(Clone)]
 struct AppState {
@@ -19,11 +19,13 @@ struct AppState {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // Initialize logging
-    // tracing_subscriber::fmt::init();
+    tracing_subscriber::fmt::init();
 
     // Read environment variables
     let redis_url = std::env::var("REDIS_URL").expect("REDIS_URL must be set");
     let port = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+
+    tracing::info!("Starting server setup");
 
     // Initialize the HTTP client
     let http_client = HttpClient::new();
@@ -31,18 +33,24 @@ async fn main() -> std::io::Result<()> {
     // Initialize the Redis client
     let redis_client = RedisClient::open(redis_url).expect("Invalid Redis URL");
 
+    // Test Redis connection
+    redis_client
+        .get_async_connection()
+        .await
+        .expect("Failed to connect to Redis");
+
     // Channel for communication between Redis subscriber and WebSocket
-    let (tx, _rx) = broadcast::channel(100); // Create a broadcast channel
+    let (tx, _rx) = broadcast::channel(100);
 
     // Spawn the Redis subscriber
     let subscriber_tx = tx.clone();
     tokio::spawn(async move {
         if let Err(e) = redis::subscriber::subscribe_to_channel("transactions", subscriber_tx).await {
-            eprintln!("Failed to subscribe to Redis channel: {}", e);
+            tracing::error!("Failed to subscribe to Redis channel: {}", e);
         }
     });
 
-    // info!("Starting server on port {}", port);
+    tracing::info!("Starting HTTP server on port {}", port);
 
     // Start the HTTP server
     HttpServer::new(move || {
@@ -53,17 +61,17 @@ async fn main() -> std::io::Result<()> {
         };
 
         App::new()
-            .app_data(web::Data::new(app_state)) // Share app state
+            .app_data(web::Data::new(app_state))
             .wrap(
                 Cors::default()
-                    .allow_any_origin() // Allow all origins
-                    .allow_any_method() // Allow all HTTP methods (GET, POST, etc.)
-                    .allow_any_header() // Allow all headers
-                    .max_age(3600), // Cache the preflight response for 1 hour
+                    .allow_any_origin()
+                    .allow_any_method()
+                    .allow_any_header()
+                    .max_age(3600),
             )
-            .configure(api::routes::configure_routes) // Configure API routes
+            .configure(api::routes::configure_routes)
     })
-    .bind(format!("0.0.0.0:{}", port))? // Bind to the Render-provided port
+    .bind(format!("0.0.0.0:{}", port))?
     .run()
     .await
 }
