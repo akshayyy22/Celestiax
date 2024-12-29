@@ -1,13 +1,10 @@
-# render.yaml
 services:
   - type: web
     name: celestiax-backend
     env: rust
     buildCommand: "cargo build --release"
     startCommand: "cargo run --release"
-    plan: free # Change to a paid plan if needed
+    plan: free
     envVars:
-      - key: REDIS_URL
-        value: <your_redis_url> # Replace with your Redis connection string
       - key: PORT
-        value: 8080 # Render dynamically assigns a port; this is default
+        value: "10000" # Optional; Render defaults to 10000

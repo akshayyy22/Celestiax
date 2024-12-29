@@ -23,7 +23,8 @@ async fn main() -> std::io::Result<()> {
 
     // Read environment variables
     let redis_url = std::env::var("REDIS_URL").expect("REDIS_URL must be set");
-    let port = std::env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+    let port = env::var("PORT").unwrap_or_else(|_| "10000".to_string());
+    let addr = format!("0.0.0.0:{}", port);
 
     tracing::info!("Starting server setup");
 
@@ -71,7 +72,7 @@ async fn main() -> std::io::Result<()> {
             )
             .configure(api::routes::configure_routes)
     })
-    .bind(format!("0.0.0.0:{}", port))?
+    .bind(addr)?
     .run()
     .await
 }
