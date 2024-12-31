@@ -23,14 +23,15 @@ COPY . .
 RUN cargo build --release
 
 # Stage 2: Runtime
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
+
 
 # Set the working directory inside the container
 WORKDIR /app
 
 # Install dependencies required to run Rust applications
 RUN apt-get update && \
-    apt-get install -y libssl3 ca-certificates && \
+    apt-get install -y ca-certificates libssl3 && \
     rm -rf /var/lib/apt/lists/*
 
 
