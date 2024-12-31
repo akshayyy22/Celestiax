@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y libssl-dev ca-certificates && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy the compiled binary from the builder stage
-COPY --from=builder /app/target/release/celestiax /app/celestiax
+COPY --from=builder /app/target/release/backend /app/celestiax
 
 # Copy static files if necessary (e.g., config files)
 COPY .env .env
