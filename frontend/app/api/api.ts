@@ -16,7 +16,8 @@ import {
 
 } from "../types/types";
 
-const BASE_URL = "http://127.0.0.1:8080/api";
+// const BASE_URL = "http://127.0.0.1:8080/api";
+const BASE_URL = "http://0.0.0.0:8081/api";
 
 export const fetchBitcoinTransactions =
   async (): Promise<BitcoinApiResponse> => {
@@ -56,24 +57,63 @@ export const fetchAlgorandTransactions =
     }
   };
 
-export const fetchWalletTransactions = async (
-  blockchain:
-    | "bitcoin"
-    | "ethereum"
-    | "algorand"
-    | "tron"
-    | "litecoin"
-    | "bitcoin-cash"
-    | "dash"
-    | "dogecoin"
-    | "binance-smart-chain"
-    | "polygon"
-    | "avalanche",
+// export const fetchWalletTransactions = async (
+//   blockchain:
+//     | "bitcoin"
+//     | "ethereum"
+//     | "algorand"
+//     | "tron"
+//     | "litecoin"
+//     | "bitcoin-cash"
+//     | "dash"
+//     | "dogecoin"
+//     | "binance-smart-chain"
+//     | "polygon"
+//     | "avalanche",
  
+//   address: string
+// ): Promise<
+//   | EthereumApiResponseSearch
+//   | BitcoinApiResponseSearch
+//   | TronApiResponseSearch
+//   | LitecoinApiResponseSearch
+//   | BTCCASHApiResponseSearch
+//   | DashApiResponseSearch
+//   | DogeApiResponseSearch
+//   | BNBSmartChainApiResponseSearch
+//   | PolygonApiResponseSearch
+//   | AvalancheApiResponseSearch
+// > => {
+//   try {
+//     const response = await axios.get<
+//     | EthereumApiResponseSearch
+//     | BitcoinApiResponseSearch
+//     | TronApiResponseSearch
+//     | LitecoinApiResponseSearch
+//     | BTCCASHApiResponseSearch
+//     | DashApiResponseSearch
+//     | DogeApiResponseSearch
+//     | BNBSmartChainApiResponseSearch
+//     | PolygonApiResponseSearch
+//     | AvalancheApiResponseSearch
+//     >(`${BASE_URL}/transaction/${blockchain}/${address}`);
+
+//     // Validate if the response contains the expected structure
+//     if (!response.data?.data?.items) {
+//       throw new Error(`Unexpected API response structure for ${blockchain}`);
+//     }
+
+//     return response.data;
+//   } catch (error) {
+   
+//     throw error;
+//   }
+// };
+
+export const fetchWalletTransactions = async (
+  blockchain: "bitcoin" | "ethereum" | "algorand" | "tron" | "litecoin" | "bitcoin-cash" | "dash" | "dogecoin" | "binance-smart-chain" | "polygon" | "avalanche",
   address: string
-): Promise<
-  | EthereumApiResponseSearch
-  | BitcoinApiResponseSearch
+): Promise<EthereumApiResponseSearch | BitcoinApiResponseSearch
   | TronApiResponseSearch
   | LitecoinApiResponseSearch
   | BTCCASHApiResponseSearch
@@ -81,12 +121,9 @@ export const fetchWalletTransactions = async (
   | DogeApiResponseSearch
   | BNBSmartChainApiResponseSearch
   | PolygonApiResponseSearch
-  | AvalancheApiResponseSearch
-> => {
+  | AvalancheApiResponseSearch> => {
   try {
-    const response = await axios.get<
-    | EthereumApiResponseSearch
-    | BitcoinApiResponseSearch
+    const response = await axios.get<EthereumApiResponseSearch | BitcoinApiResponseSearch
     | TronApiResponseSearch
     | LitecoinApiResponseSearch
     | BTCCASHApiResponseSearch
@@ -94,17 +131,16 @@ export const fetchWalletTransactions = async (
     | DogeApiResponseSearch
     | BNBSmartChainApiResponseSearch
     | PolygonApiResponseSearch
-    | AvalancheApiResponseSearch
-    >(`${BASE_URL}/transaction/${blockchain}/${address}`);
+    | AvalancheApiResponseSearch>(`${BASE_URL}/transaction/${blockchain}/${address}`);
 
-    // Validate if the response contains the expected structure
-    if (!response.data?.data?.items) {
+    // Adjusted validation check
+    if (!response.data?.Ok?.data?.items) {
       throw new Error(`Unexpected API response structure for ${blockchain}`);
     }
 
-    return response.data;
+    return response.data; // Return only the relevant data part
   } catch (error) {
-   
+    console.error("Error fetching wallet transactions:", error);
     throw error;
   }
 };

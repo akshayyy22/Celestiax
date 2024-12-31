@@ -1,33 +1,33 @@
 mod services;
 mod api;
 mod redis;
-
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
 use reqwest::Client as HttpClient; // Use alias for clarity
 use tokio::sync::broadcast; // Import broadcast module
 use ::redis::Client as RedisClient;
-use tracing::info;
 use std::env;
+use log::{error, info, LevelFilter};
+use env_logger;
+
 
 #[derive(Clone)]
 struct AppState {
     http_client: HttpClient,
     redis_client: RedisClient,
-    tx: broadcast::Sender<String>, // Change Sender type to broadcast
+    tx: broadcast::Sender<String>,
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // Initialize logging
-    tracing_subscriber::fmt::init();
+    // Initialize logger
+    env_logger::builder().filter_level(LevelFilter::Info).init();
 
-    // Read environment variables
-    let redis_url = std::env::var("REDIS_URL").expect("REDIS_URL must be set");
-    let port = env::var("PORT").unwrap_or_else(|_| "10000".to_string());
-    let addr = format!("0.0.0.0:{}", port);
+    // Load environment variables
+    let api_port = env::var("API_PORT").unwrap_or_else(|_| "8081".to_string());
+    let redis_url = env::var("REDIS_URL").unwrap_or_else(|_| "redis://127.0.0.1/".to_string());
 
-    tracing::info!("Starting server setup");
+    info!("Starting server on port: {}", api_port);
 
     // Initialize the HTTP client
     let http_client = HttpClient::new();
@@ -35,24 +35,16 @@ async fn main() -> std::io::Result<()> {
     // Initialize the Redis client
     let redis_client = RedisClient::open(redis_url).expect("Invalid Redis URL");
 
-    // Test Redis connection
-    redis_client
-        .get_async_connection()
-        .await
-        .expect("Failed to connect to Redis");
-
-    // Channel for communication between Redis subscriber and WebSocket
+    // Create a broadcast channel
     let (tx, _rx) = broadcast::channel(100);
 
     // Spawn the Redis subscriber
     let subscriber_tx = tx.clone();
     tokio::spawn(async move {
         if let Err(e) = redis::subscriber::subscribe_to_channel("transactions", subscriber_tx).await {
-            tracing::error!("Failed to subscribe to Redis channel: {}", e);
+            error!("Failed to subscribe to Redis channel: {}", e);
         }
     });
-
-    tracing::info!("Starting HTTP server on port {}", port);
 
     // Start the HTTP server
     HttpServer::new(move || {
@@ -73,7 +65,7 @@ async fn main() -> std::io::Result<()> {
             )
             .configure(api::routes::configure_routes)
     })
-    .bind(addr)?
+    .bind(format!("0.0.0.0:{}", api_port))?
     .run()
     .await
 }

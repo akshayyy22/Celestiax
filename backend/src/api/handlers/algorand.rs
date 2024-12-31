@@ -5,7 +5,7 @@ use chrono::{Utc, Duration};
 pub async fn get_algorand_data(
     query: web::Query<crate::api::models::algorand::AlgorandQuery>,
 ) -> impl Responder {
-    let limit = query.limit.unwrap_or(10);
+    let limit = query.limit.unwrap_or(200);
     let offset = query.offset.unwrap_or(0);
     let network = query.network.clone().unwrap_or_else(|| "algorand".to_string());
 

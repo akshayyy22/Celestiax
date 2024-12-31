@@ -1,43 +1,48 @@
-# Use the official Rust image as the build stage
+# Stage 1: Build
 FROM rust:latest AS builder
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the entire backend code to the container
-COPY . .
+# Copy the Cargo.toml and Cargo.lock first for dependency resolution
+COPY Cargo.toml Cargo.lock ./
 
-# Fetch dependencies and cache them
-RUN cargo fetch
+# Create a dummy main.rs to speed up dependency compilation
+RUN mkdir src && echo "fn main() {}" > src/main.rs
 
-# Copy the source code
-COPY src ./src
-
-# Build the application in release mode
+# Pre-build dependencies (caches them in a Docker layer)
 RUN cargo build --release
 
-# Use a minimal base image to run the binary
-FROM debian:bookworm-slim
+# Remove the dummy main.rs to replace with actual code
+RUN rm -rf src
 
-# Install necessary system dependencies, including OpenSSL
-RUN apt-get update && \
-    apt-get install -y ca-certificates libssl3 && \
-    rm -rf /var/lib/apt/lists/*
+# Copy the rest of the source code
+COPY . .
 
-# Set the working directory
+# Compile the application
+RUN cargo build --release
+
+# Stage 2: Runtime
+FROM debian:buster-slim
+
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the binary from the build stage
-COPY --from=builder /app/target/release/backend .
+# Install dependencies required to run Rust applications
+RUN apt-get update && apt-get install -y libssl-dev ca-certificates && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Expose the application's port (update if different)
-EXPOSE 8080
+# Copy the compiled binary from the builder stage
+COPY --from=builder /app/target/release/celestiax /app/celestiax
 
-# Set environment variables
-ENV RUST_BACKTRACE=1
+# Copy static files if necessary (e.g., config files)
+COPY .env .env
 
-# Run the binary
-CMD ["./backend"]
+# Expose the application port (matches the port in your main.rs)
+EXPOSE 8081
 
+# Set environment variables for runtime
+ENV RUST_LOG=info
 
-
+# Run the application
+CMD ["/app/celestiax"]

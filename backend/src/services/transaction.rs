@@ -5,7 +5,7 @@ use std::env;
 
 pub async fn fetch_transactions(blockchain: &str, address: &str) -> Result<TransactionData, String> {
     dotenv().ok(); // Load environment variables from the .env file
-    let api_key = env::var("BITQUERY_API_KEY").map_err(|_| "Missing BITQUERY_API_KEY in environment variables".to_string())?;
+    let api_key = env::var("CRYPTO_API_KEY").map_err(|_| "Missing CRYPTO_API_KEY in environment variables".to_string())?;
 
     let url = format!(
         "https://rest.cryptoapis.io/blockchain-data/{}/mainnet/addresses/{}/transactions?context=yourExampleString&limit=50&offset=0",

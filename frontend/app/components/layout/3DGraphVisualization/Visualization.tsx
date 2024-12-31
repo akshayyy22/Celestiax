@@ -23,33 +23,32 @@ const GraphVisualization: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const [noTransactionsFound, setNoTransactionsFound] = useState(false); // New state for no transactions
 
-
-
     const handleSearch = async (walletId: string) => {
         setIsLoading(true); // Show loader
         setNoTransactionsFound(false); // Reset no transactions state
-
+    
         try {
             const blockchain = selectedCrypto;
             const fetchedTransactions = await fetchWalletTransactions(blockchain, walletId);
-
-            if (
-                fetchedTransactions?.data?.items &&
-                Array.isArray(fetchedTransactions.data.items) &&
-                fetchedTransactions.data.items.length > 0
-            ) {
+    
+            // Accessing items through the Ok property
+            const transactions = fetchedTransactions.Ok.data.items;
+    
+            if (transactions && Array.isArray(transactions) && transactions.length > 0) {
                 setSearchMode(true); // Enable search mode
                 setNoTransactionsFound(false); // Transactions found
-                processSearchTransactions(fetchedTransactions.data.items);
+                processSearchTransactions(transactions);
             } else {
                 setNoTransactionsFound(true); // No transactions found
             }
         } catch (error) {
+            console.error(`Error fetching transactions for wallet ID ${walletId}:`, error);
             setNoTransactionsFound(true); // Treat as invalid wallet ID
         } finally {
             setIsLoading(false); // Hide loader
         }
     };
+    
 
     const loadTransactions = async () => {
         if (searchMode) return; // Prevent fetching transactions during search mode
@@ -179,7 +178,7 @@ const GraphVisualization: React.FC = () => {
         let links = [...graphData.links];
         let currentNodes: any[] = [];
         let currentLinks: any[] = [];
-        const batchSize = 100; // Number of nodes/links to add in each batch
+        const batchSize = 200; // Number of nodes/links to add in each batch
         const delay = 500; // Delay in milliseconds between batches
     
         const addDataStep = () => {

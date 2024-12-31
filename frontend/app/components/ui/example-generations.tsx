@@ -41,32 +41,25 @@ const VideoItem = ({
   
   const videos = [
     {
-      src: "/example-generations/apple_swift.mp4",
+      src: "/example-video/bitcoin-example.mp4",
       poster: "/example-generations/apple_swift.png",
       title: "Bitcoin",
       repoUrl: "https://bitcoin.org/en/",
       commits: "393,242+",
     },
     {
-      src: "/example-generations/serenityos_serenity.mp4",
+      src: "/example-video/ethereum-example.mp4",
       poster: "/example-generations/serenityos_serenity.png",
       title: "Ethereum",
       repoUrl: "https://ethereum.org/en/",
       commits: "1.1 billion",
     },
     {
-      src: "/example-generations/facebook_react.mp4",
+      src: "/example-video/algorand-example.mp4",
       poster: "/example-generations/facebook_react.png",
-      title: "XRP",
+      title: "Algorand",
       repoUrl: "https://xrpl.org/",
       commits: "1.4 million",
-    },
-    {
-      src: "/example-generations/3eif_gitmotion.mp4",
-      poster: "/example-generations/3eif_gitmotion.png",
-      title: "Tron",
-      repoUrl: "https://trondao.org/",
-      commits: "6 million",
     },
   ];
   
