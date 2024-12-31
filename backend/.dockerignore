@@ -1,5 +1,4 @@
 target
 *.rs.bk
 *.log
-.env
 .git
