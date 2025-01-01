@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 export default function VisualizationsCount() {
   const [count, setCount] = useState<number>(() => {
-    // Load the initial count from localStorage, or use a default value
-    const savedCount = localStorage.getItem('visualizationCount');
+    // Load the initial count from sessionStorage, or use a default value
+    const savedCount = sessionStorage.getItem('visualizationCount');
     return savedCount ? parseInt(savedCount, 10) : 534;
   });
 
@@ -13,8 +13,8 @@ export default function VisualizationsCount() {
       setCount((prevCount) => {
         const newCount = prevCount + increment;
 
-        // Save the new count in localStorage
-        localStorage.setItem('visualizationCount', newCount.toString());
+        // Save the new count in sessionStorage
+        sessionStorage.setItem('visualizationCount', newCount.toString());
         return newCount;
       });
 

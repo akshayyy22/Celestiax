@@ -25,24 +25,28 @@ const GraphVisualization: React.FC = () => {
   const [graphData, setGraphData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [noTransactionsFound, setNoTransactionsFound] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
 
-  useEffect(() => { 
-    // Load selectedCrypto from local storage on mount
+  useEffect(() => {
+    // This code will only run in the browser
+    setWindowWidth(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
-        const storedCrypto = localStorage.getItem("selectedCrypto"); 
-        if (storedCrypto) { 
-            setSelectedCrypto(storedCrypto as keyof typeof coinConfigs); 
-        }
+      const storedCrypto = sessionStorage.getItem("selectedCrypto");
+      if (storedCrypto) {
+        setSelectedCrypto(storedCrypto as keyof typeof coinConfigs);
+      }
     }
-}, []); 
-
-useEffect(() => { 
-    // Save selectedCrypto to local storage whenever it changes
-    if (typeof window !== "undefined" && selectedCrypto) { 
-        localStorage.setItem("selectedCrypto", selectedCrypto); 
-    } 
-}, [selectedCrypto]); 
-
+  }, []);
+  
+  useEffect(() => {
+    if (typeof window !== "undefined" && selectedCrypto) {
+      sessionStorage.setItem("selectedCrypto", selectedCrypto);
+    }
+  }, [selectedCrypto]);
+  
 
   const handleSearch = async (walletId: string) => {
     setIsLoading(true);
