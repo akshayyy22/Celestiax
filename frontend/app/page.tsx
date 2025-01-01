@@ -1,8 +1,7 @@
-"use client";
-
+"use client"
 import React, { useState } from "react";
+import dynamic from 'next/dynamic'; // Step 1: Import dynamic
 
-import CryptoSelector from "@/app/components/CryptoButton";
 import Loader from "@/app/components/ui/loader"; // Import Loader component
 
 import VisualizationsCount from "@/app/components/ui/visualizations-count";
@@ -11,6 +10,9 @@ import Footer from "./components/ui/footer";
 
 const Page: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false); // Manage loading state
+  const CryptoSelector = dynamic(() => import('@/app/components/CryptoButton'), { ssr: false });
+
+ 
 
   return (
     <main>

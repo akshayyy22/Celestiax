@@ -2,20 +2,27 @@
 import React, { useEffect, useState } from 'react';
 
 export default function VisualizationsCount() {
-  const [count, setCount] = useState<number>(() => {
-    // Load the initial count from sessionStorage, or use a default value
-    const savedCount = sessionStorage.getItem('visualizationCount');
-    return savedCount ? parseInt(savedCount, 10) : 534;
-  });
+  const [count, setCount] = useState<number>(534); // Default value
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Access sessionStorage only in the client-side
+      const savedCount = sessionStorage.getItem('visualizationCount');
+      if (savedCount) {
+        setCount(parseInt(savedCount, 10));
+      }
+    }
+
     const updateCount = () => {
       const increment = Math.floor(Math.random() * 3 + 1); // Increment by 1-3
       setCount((prevCount) => {
         const newCount = prevCount + increment;
 
-        // Save the new count in sessionStorage
-        sessionStorage.setItem('visualizationCount', newCount.toString());
+        if (typeof window !== "undefined") {
+          // Save the new count in sessionStorage
+          sessionStorage.setItem('visualizationCount', newCount.toString());
+        }
+
         return newCount;
       });
 
