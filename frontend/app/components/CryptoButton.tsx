@@ -9,6 +9,20 @@ import { Card } from "@/app/components/ui/card";
 import { useCryptoStore } from "@/app/hooks/useStore"; // Import Zustand store
 import { useDebounce } from "use-debounce"; // Import use-debounce
 
+// Define the CryptoId type to restrict the value to certain strings
+type CryptoId =
+  | "bitcoin"
+  | "ethereum"
+  | "algorand"
+  | "tron"
+  | "litecoin"
+  | "bitcoin-cash"
+  | "dash"
+  | "dogecoin"
+  | "binance-smart-chain"
+  | "polygon"
+  | "avalanche";
+
 interface CryptoSelectorProps {
   setLoading: (isLoading: boolean) => void; // Callback to manage global loading state
 }
@@ -18,16 +32,7 @@ export default function CryptoSelector({ setLoading }: CryptoSelectorProps) {
   const { selectedCrypto, setSelectedCrypto } = useCryptoStore(); // Use Zustand to get state and setter
   const [debouncedSelectedCrypto] = useDebounce(selectedCrypto, 300);
 
-  useEffect(() => {
-    if (debouncedSelectedCrypto) {
-      fetchData(debouncedSelectedCrypto); // Call your data fetching function
-    }
-  }, [debouncedSelectedCrypto]);
-
-  const fetchData = async (crypto: string) => {
-    console.log(`Fetching data for ${crypto}`);
-  };
-
+  
   const handleVisualize = async () => {
     setLoading(true); // Activate global loading state
     await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate delay
@@ -43,12 +48,12 @@ export default function CryptoSelector({ setLoading }: CryptoSelectorProps) {
           Market Visualization
         </h2>
         <p className="flex text-slate-400 items-start justify-start">
-        Select a cryptocurrency to visualize market trends as interactive nodes and connections
+          Select a cryptocurrency to visualize market trends as interactive nodes and connections
         </p>
       </div>
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <CryptoDropdown value={selectedCrypto} onValueChange={setSelectedCrypto} />
+        <CryptoDropdown value={selectedCrypto as CryptoId} onValueChange={setSelectedCrypto} /> {/* Type casting */}
         <Button
           onClick={handleVisualize}
           className="w-full sm:w-auto flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 transition-all duration-200"
