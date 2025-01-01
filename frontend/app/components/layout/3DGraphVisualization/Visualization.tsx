@@ -6,7 +6,6 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 import { useCryptoStore } from "@/app/hooks/useStore";
 import { fetchWalletTransactions } from "@/app/api/api";
 import coinConfigs from "@/app/types/coinUtils";
-import { BitcoinTransaction } from "@/app/types/types";
 import {
   SearchBitcoinTransaction,
   SearchEthereumTransaction,
@@ -18,7 +17,6 @@ import Loader from "@/app/components/ui/loader";
 import Load from "@/app/components/ui/load";
 
 const GraphVisualization: React.FC = () => {
-  const [transactions, setTransactions] = useState<BitcoinTransaction[]>([]);
   const [searchMode, setSearchMode] = useState(false);
   const { selectedCrypto, setSelectedCrypto } = useCryptoStore() as {
     selectedCrypto: keyof typeof coinConfigs;

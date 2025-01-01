@@ -1,14 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation"; // Import Next.js router
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Button } from "@/app/components/ui/button";
 import { CryptoDropdown } from "./CrptoDropdown";
 import { LineChart, TrendingUp } from "lucide-react";
 import { Card } from "@/app/components/ui/card";
 import { useCryptoStore } from "@/app/hooks/useStore"; // Import Zustand store
 import { useDebounce } from "use-debounce"; // Import use-debounce
-import Loader from "@/app/components/ui/loader"; // Import Loader component
 
 interface CryptoSelectorProps {
   setLoading: (isLoading: boolean) => void; // Callback to manage global loading state

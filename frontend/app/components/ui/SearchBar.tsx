@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Search, Loader } from 'lucide-react';
-import { useCryptoStore } from "@/app/hooks/useStore";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -11,7 +10,6 @@ interface SearchBarProps {
 
 export default function SearchBar({ onSearch, isLoading = false }: SearchBarProps) {
   const [query, setQuery] = useState('');
-  const { selectedCrypto } = useCryptoStore(); // Access Zustand store
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

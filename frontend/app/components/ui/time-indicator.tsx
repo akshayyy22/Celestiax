@@ -3,13 +3,11 @@
 import { useEffect, useState } from "react";
 import { cn } from "@/app/lib/utils";
 import { useCryptoStore } from "@/app/hooks/useStore";
-import { useTheme } from "@mui/material/styles";
 
 export function TimeIndicator() {
   const { selectedCrypto, cryptoTime, setCryptoTime } = useCryptoStore();
   const [mounted, setMounted] = useState(false);
   const [isBlinking, setIsBlinking] = useState(true);
-  const theme = useTheme();
 
   useEffect(() => {
     setMounted(true);

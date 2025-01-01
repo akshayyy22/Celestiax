@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { CryptoIcon } from "./CryptoIcon";
-import { useCryptoStore } from "@/app/hooks/useStore"; // Import Zustand store
 
 interface CryptoDropdownProps {
   value: string;
