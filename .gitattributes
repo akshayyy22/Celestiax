@@ -1,0 +1,1 @@
+frontend/public/example-video/*.mov filter=lfs diff=lfs merge=lfs -text

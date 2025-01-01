@@ -1,24 +1,21 @@
 use crate::api::models::bitcoin::BitcoinTransaction;
 use crate::api::models::bitcoin::{Block, Timestamp};
+use dotenv::dotenv;
 use reqwest::Client;
 use serde_json::Value;
 use std::env;
-use dotenv::dotenv;
-
 
 use crate::api::models::ethereum::{
     Address, Block as EthereumBlock, BlockTimestamp, CreatedContract, Currency,
     EthereumTransaction, ToAddress,
 };
 
-
-
-use crate::api::models::algorand::{AlgorandTransaction, Block as AlgorandBlock, BlockTimestamp as AlgorandBlockTimeStamp, Currency as AlgorandCurrency , Sender};
-
-
+use crate::api::models::algorand::{
+    AlgorandTransaction, Block as AlgorandBlock, BlockTimestamp as AlgorandBlockTimeStamp,
+    Currency as AlgorandCurrency, Sender,
+};
 
 const BITQUERY_URL: &str = "https://graphql.bitquery.io";
-
 pub async fn fetch_bitcoin_data(
     network: &str,
     limit: usize,
@@ -29,7 +26,6 @@ pub async fn fetch_bitcoin_data(
     dotenv().ok(); // Load environment variables from the .env file
     let api_key = env::var("BITQUERY_API_KEY")
         .map_err(|_| "Missing BITQUERY_API_KEY in environment variables".to_string())?;
-
 
     let client = Client::new();
     let graphql_query = r#"
@@ -247,8 +243,10 @@ pub async fn fetch_ethereum_data(
                 gas: tx["gas"].as_f64(),
                 gas_currency: tx["gasCurrency"]
                     .as_object()
-                    .and_then(|gc: &serde_json::Map<String, Value>| gc["name"].as_str().map(|s| s.to_string()))
-                    .unwrap_or_default(), 
+                    .and_then(|gc: &serde_json::Map<String, Value>| {
+                        gc["name"].as_str().map(|s| s.to_string())
+                    })
+                    .unwrap_or_default(),
                 gas_price: tx["gasPrice"].as_f64(),
                 nonce: tx["nonce"].as_u64().unwrap_or_default(),
                 success: tx["success"].as_bool(),
@@ -272,21 +270,19 @@ pub async fn fetch_ethereum_data(
     }
 }
 
-
-
-
-
-
 pub async fn fetch_algorand_data(
-  network: &str,
-  limit: usize,
-  offset: usize,
-  from: &str,
-  till: &str,
+    network: &str,
+    limit: usize,
+    offset: usize,
+    from: &str,
+    till: &str,
 ) -> Result<Vec<AlgorandTransaction>, String> {
-  let client = Client::new();
+    dotenv().ok(); // Load environment variables from the .env file
+    let api_key = env::var("BITQUERY_API_KEY")
+        .map_err(|_| "Missing BITQUERY_API_KEY in environment variables".to_string())?;
 
-  let graphql_query = r#"
+    let client = Client::new();
+    let graphql_query = r#"
   query ($network: AlgorandNetwork!, $limit: Int!, $offset: Int!, $from: ISO8601DateTime, $till: ISO8601DateTime) {
       algorand(network: $network) {
           transactions(
@@ -328,72 +324,74 @@ pub async fn fetch_algorand_data(
   }
   "#;
 
-  let variables = serde_json::json!({
-      "network": network,
-      "limit": limit,
-      "offset": offset,
-      "from": from,
-      "till": till,
-  });
+    let variables = serde_json::json!({
+        "network": network,
+        "limit": limit,
+        "offset": offset,
+        "from": from,
+        "till": till,
+    });
 
-  let response = client
-      .post(BITQUERY_URL)
-      .header("Content-Type", "application/json")
-      .header("X-API-KEY", "BQY9SVcAV8wPippKsIcOqIXGV9GTZRa7") // Replace with your actual API key.
-      .json(&serde_json::json!({ "query": graphql_query, "variables": variables }))
-      .send()
-      .await
-      .map_err(|e| e.to_string())?;
+    let response = client
+        .post(BITQUERY_URL)
+        .header("Content-Type", "application/json")
+        .header("X-API-KEY", api_key) 
+        .json(&serde_json::json!({ "query": graphql_query, "variables": variables }))
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
 
-  if response.status().is_success() {
-      let data: Value = response.json().await.map_err(|e| e.to_string())?;
+    if response.status().is_success() {
+        let data: Value = response.json().await.map_err(|e| e.to_string())?;
 
-      let transactions = data["data"]["algorand"]["transactions"]
-          .as_array()
-          .ok_or_else(|| "Unexpected response format".to_string())?
-          .iter()
-          .map(|tx| AlgorandTransaction {
-              block: AlgorandBlock {
-                  timestamp: AlgorandBlockTimeStamp  {
-                      time: tx["block"]["timestamp"]["time"]
-                          .as_str()
-                          .unwrap_or_default()
-                          .to_string(),
-                  },
-                  height: tx["block"]["height"].as_u64().unwrap_or_default(),
-              },
-              currency: AlgorandCurrency {
-                  token_type: tx["currency"]["tokenType"].as_str().map(ToString::to_string),
-                  token_id: tx["currency"]["tokenId"].as_str().map(ToString::to_string),
-                  symbol: tx["currency"]["symbol"].as_str().map(ToString::to_string),
-                  name: tx["currency"]["name"].as_str().map(ToString::to_string),
-                  decimals: tx["currency"]["decimals"].as_u64(),
-                  address: tx["currency"]["address"].as_str().map(ToString::to_string),
-              },
-              fee: tx["fee"].as_f64().unwrap_or_default(),
-              first_round: tx["firstRound"].as_u64().unwrap_or_default(),
-              pool_error: tx["poolerror"].as_str().map(ToString::to_string),
-              note: tx["note"].as_str().map(ToString::to_string),
-              last_round: tx["lastRound"].as_u64().unwrap_or_default(),
-              index: tx["index"].as_u64().unwrap_or_default(),
-              hash: tx["hash"].as_str().unwrap_or_default().to_string(),
-              group: tx["group"].as_str().map(ToString::to_string),
-              genesis_id: tx["genesisId"].as_str().unwrap_or_default().to_string(),
-              genesis_hash: tx["genesisHash"].as_str().unwrap_or_default().to_string(),
-              subtype: tx["subtype"].as_str().map(ToString::to_string),
-              tx_type: tx["type"].as_str().unwrap_or_default().to_string(),
-              sender: Sender {
-                  address: tx["sender"]["address"]
-                      .as_str()
-                      .unwrap_or_default()
-                      .to_string(),
-                  annotation: tx["sender"]["annotation"].as_str().map(ToString::to_string),
-              },
-          })
-          .collect::<Vec<AlgorandTransaction>>();
+        let transactions = data["data"]["algorand"]["transactions"]
+            .as_array()
+            .ok_or_else(|| "Unexpected response format".to_string())?
+            .iter()
+            .map(|tx| AlgorandTransaction {
+                block: AlgorandBlock {
+                    timestamp: AlgorandBlockTimeStamp {
+                        time: tx["block"]["timestamp"]["time"]
+                            .as_str()
+                            .unwrap_or_default()
+                            .to_string(),
+                    },
+                    height: tx["block"]["height"].as_u64().unwrap_or_default(),
+                },
+                currency: AlgorandCurrency {
+                    token_type: tx["currency"]["tokenType"]
+                        .as_str()
+                        .map(ToString::to_string),
+                    token_id: tx["currency"]["tokenId"].as_str().map(ToString::to_string),
+                    symbol: tx["currency"]["symbol"].as_str().map(ToString::to_string),
+                    name: tx["currency"]["name"].as_str().map(ToString::to_string),
+                    decimals: tx["currency"]["decimals"].as_u64(),
+                    address: tx["currency"]["address"].as_str().map(ToString::to_string),
+                },
+                fee: tx["fee"].as_f64().unwrap_or_default(),
+                first_round: tx["firstRound"].as_u64().unwrap_or_default(),
+                pool_error: tx["poolerror"].as_str().map(ToString::to_string),
+                note: tx["note"].as_str().map(ToString::to_string),
+                last_round: tx["lastRound"].as_u64().unwrap_or_default(),
+                index: tx["index"].as_u64().unwrap_or_default(),
+                hash: tx["hash"].as_str().unwrap_or_default().to_string(),
+                group: tx["group"].as_str().map(ToString::to_string),
+                genesis_id: tx["genesisId"].as_str().unwrap_or_default().to_string(),
+                genesis_hash: tx["genesisHash"].as_str().unwrap_or_default().to_string(),
+                subtype: tx["subtype"].as_str().map(ToString::to_string),
+                tx_type: tx["type"].as_str().unwrap_or_default().to_string(),
+                sender: Sender {
+                    address: tx["sender"]["address"]
+                        .as_str()
+                        .unwrap_or_default()
+                        .to_string(),
+                    annotation: tx["sender"]["annotation"].as_str().map(ToString::to_string),
+                },
+            })
+            .collect::<Vec<AlgorandTransaction>>();
 
-      Ok(transactions)
-  } else {
-      Err(format!("Request failed with status: {}", response.status()))
-  }
+        Ok(transactions)
+    } else {
+        Err(format!("Request failed with status: {}", response.status()))
+    }
 }

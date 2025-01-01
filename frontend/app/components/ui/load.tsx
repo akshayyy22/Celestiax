@@ -6,11 +6,11 @@ const Load = () => {
   const { selectedCrypto } = useCryptoStore(); // Access Zustand store
 
   return (
-    
     <StyledWrapper>
-        <div className="loader">
-        {/* <div className="simple-text">No transactions found. Please search using a valid {selectedCrypto} Wallet ID!</div> */}
-
+      <div className="simple-text">
+        No transactions found. Please search using a valid {selectedCrypto} Wallet ID!
+      </div>
+      <div className="loader">
         <div className="loader-square" />
         <div className="loader-square" />
         <div className="loader-square" />
@@ -21,123 +21,122 @@ const Load = () => {
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
-
-
-height: 100vh; /* Full viewport height */
-display: flex;
-align-items: center;
-justify-content: center;
-
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
   .simple-text {
-    position: absolute;
-    top: -150px;
+    margin-bottom: 40px; /* Add spacing between text and loader */
     color: white;
-    width: 200px;
     text-align: center;
     font-weight: bold; /* Bold text */
+    font-size: 1.2rem;
     background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    padding: 10px 20px; /* Add padding around the text */
     border-radius: 5px; /* Rounded corners */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Shadow effect */
   }
+
   @keyframes square-animation {
     0% {
-     left: 0;
-     top: 0;
+      left: 0;
+      top: 0;
     }
- 
+
     10.5% {
-     left: 0;
-     top: 0;
+      left: 0;
+      top: 0;
     }
- 
+
     12.5% {
-     left: 32px;
-     top: 0;
+      left: 32px;
+      top: 0;
     }
- 
+
     23% {
-     left: 32px;
-     top: 0;
+      left: 32px;
+      top: 0;
     }
- 
+
     25% {
-     left: 64px;
-     top: 0;
+      left: 64px;
+      top: 0;
     }
- 
+
     35.5% {
-     left: 64px;
-     top: 0;
+      left: 64px;
+      top: 0;
     }
- 
+
     37.5% {
-     left: 64px;
-     top: 32px;
+      left: 64px;
+      top: 32px;
     }
- 
+
     48% {
-     left: 64px;
-     top: 32px;
+      left: 64px;
+      top: 32px;
     }
- 
+
     50% {
-     left: 32px;
-     top: 32px;
+      left: 32px;
+      top: 32px;
     }
- 
+
     60.5% {
-     left: 32px;
-     top: 32px;
+      left: 32px;
+      top: 32px;
     }
- 
+
     62.5% {
-     left: 32px;
-     top: 64px;
+      left: 32px;
+      top: 64px;
     }
- 
+
     73% {
-     left: 32px;
-     top: 64px;
+      left: 32px;
+      top: 64px;
     }
- 
+
     75% {
-     left: 0;
-     top: 64px;
+      left: 0;
+      top: 64px;
     }
- 
+
     85.5% {
-     left: 0;
-     top: 64px;
+      left: 0;
+      top: 64px;
     }
- 
+
     87.5% {
-     left: 0;
-     top: 32px;
+      left: 0;
+      top: 32px;
     }
- 
+
     98% {
-     left: 0;
-     top: 32px;
+      left: 0;
+      top: 32px;
     }
- 
+
     100% {
-     left: 0;
-     top: 0;
+      left: 0;
+      top: 0;
     }
-   }
- 
-   .loader {
+  }
+
+  .loader {
     position: relative;
     width: 96px;
     height: 96px;
     transform: rotate(45deg);
-   }
- 
-   .loader-square {
+  }
+
+  .loader-square {
     position: absolute;
     top: 0;
     left: 0;
@@ -150,40 +149,39 @@ justify-content: center;
     background-position: center;
     background-attachment: fixed;
     animation: square-animation 10s ease-in-out infinite both;
-   }
- 
-   .loader-square:nth-of-type(0) {
+  }
+
+  .loader-square:nth-of-type(0) {
     animation-delay: 0s;
-   }
- 
-   .loader-square:nth-of-type(1) {
+  }
+
+  .loader-square:nth-of-type(1) {
     animation-delay: -1.4285714286s;
-   }
- 
-   .loader-square:nth-of-type(2) {
+  }
+
+  .loader-square:nth-of-type(2) {
     animation-delay: -2.8571428571s;
-   }
- 
-   .loader-square:nth-of-type(3) {
+  }
+
+  .loader-square:nth-of-type(3) {
     animation-delay: -4.2857142857s;
-   }
- 
-   .loader-square:nth-of-type(4) {
+  }
+
+  .loader-square:nth-of-type(4) {
     animation-delay: -5.7142857143s;
-   }
- 
-   .loader-square:nth-of-type(5) {
+  }
+
+  .loader-square:nth-of-type(5) {
     animation-delay: -7.1428571429s;
-   }
- 
-   .loader-square:nth-of-type(6) {
+  }
+
+  .loader-square:nth-of-type(6) {
     animation-delay: -8.5714285714s;
-   }
- 
-   .loader-square:nth-of-type(7) {
+  }
+
+  .loader-square:nth-of-type(7) {
     animation-delay: -10s;
-   }`;
- 
+  }
+`;
 
 export default Load;
-

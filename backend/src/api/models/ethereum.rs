@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Deserialize)]
 pub struct EthereumQuery {
 
-    pub network: Option<String>, // Default to "bitcoin"
+    pub network: Option<String>, // Default to "Ethereum"
     pub limit: Option<usize>,
     pub offset: Option<usize>,
     // pub from: Option<String>,    // Optional

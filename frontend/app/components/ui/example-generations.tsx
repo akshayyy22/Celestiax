@@ -12,7 +12,7 @@ const VideoItem = ({
     commits: string;
   }) => (
     <div className="flex flex-col">
-      <div className="rounded-xl border-[1.5px] border-white/10 bg-black overflow-hidden aspect-[16/10]">
+      <div className="rounded-xl border-[1.5px] border-white/10 bg-black overflow-hidden aspect-[16/9]">
         <video
           className="w-full h-full object-cover"
           controls
@@ -41,22 +41,22 @@ const VideoItem = ({
   
   const videos = [
     {
-      src: "/example-video/bitcoin-example.mp4",
-      poster: "/example-generations/apple_swift.png",
+      src: "/example-video/bitcoin-example.mov",
+      poster: "/example-photo/bitcoin-example-photo.png",
       title: "Bitcoin",
       repoUrl: "https://bitcoin.org/en/",
       commits: "393,242+",
     },
     {
-      src: "/example-video/ethereum-example.mp4",
-      poster: "/example-generations/serenityos_serenity.png",
+      src: "/example-video/ethereum-example.mov",
+      poster: "/example-photo/ethereum-example-photo.png",
       title: "Ethereum",
       repoUrl: "https://ethereum.org/en/",
       commits: "1.1 billion",
     },
     {
-      src: "/example-video/algorand-example.mp4",
-      poster: "/example-generations/facebook_react.png",
+      src: "/example-video/algorand-example.mov",
+      poster: "/example-photo/algorand-example-photo.png",
       title: "Algorand",
       repoUrl: "https://xrpl.org/",
       commits: "1.4 million",
