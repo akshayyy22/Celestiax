@@ -1,6 +1,8 @@
 # CelestiaX Cryptocurrency Visualization
 
-CelestiaX is a real-time cryptocurrency transaction visualization platform that enables users to explore dynamic visualizations of cryptocurrency transactions across various blockchains. This project showcases the latest transactions on a 3D globe, with customizable node properties for different cryptocurrencies, including `Bitcoin`, `Ethereum`, `Solana`, and others.
+CelestiaX is a real-time cryptocurrency transaction visualization platform that enables users to explore dynamic visualizations of cryptocurrency transactions as a neural network. The platform offers interactive features such as transaction search by wallet ID, cryptocurrency selection, and detailed node interactions.
+
+
 
 
 ## Table of Contents
@@ -16,93 +18,52 @@ CelestiaX is a real-time cryptocurrency transaction visualization platform that 
 
 ## Project Overview
 
-CelestiaX allows real-time tracking and visualization of cryptocurrency transactions, including popular coins like Bitcoin, Ethereum, Solana, and more. The system integrates with a backend built in Rust using Actix Web and Redis for efficient, real-time data streaming. The frontend is built with Next.js, React, and TypeScript, showcasing dynamic 3D visualizations of cryptocurrency transactions across a globe.
+CelestiaX is designed to showcase the latest cryptocurrency transactions in a visually compelling manner. Users can interact with a neural network-style visualization where each node represents a transaction. The system provides an option to search wallet IDs and view detailed transaction data for specific cryptocurrencies like Bitcoin, Ethereum, and Solana.
 
 Key Features:
-- **Real-Time Visualization**: Watch cryptocurrency transactions as they happen on a 3D globe.
-- **Interactive Node Network**: View nodes representing transactions, with real-time updates.
-- **Blockchain Filters**: Filter and view transactions from specific cryptocurrencies (Bitcoin, Ethereum, Solana, etc.).
-- **Customizable Visualization**: Customize node colors and labels per blockchain.
-- **Post-Processing Effects**: Apply bloom effects to enhance the visual appearance of transactions.
+- **Real-Time Neural Network Visualization**: Transactions are visualized as interconnected nodes with dynamic updates.
+- **Search Functionality**: Users can search for a specific wallet ID and view corresponding transaction details.
+- **Cryptocurrency Selection**: Filter and visualize the last 200 transactions for a selected cryptocurrency.
+- **Detailed Interaction**: Hover over nodes to display transaction details such as wallet addresses and amounts.
+
 
 ## Tech Stack
 
 ### Frontend:
 - **Next.js**: Framework for building the frontend with React and TypeScript.
-- **Material-UI (MUI)**: A library for building responsive UI components.
+- **Three.js / React Three Fiber**: For rendering 3D neural network visualizations.
+- **3D Force Graph**: Library for creating interactive, force-directed graph visualizations.
 - **Tailwind CSS**: A utility-first CSS framework for styling.
-- **WebSocket / SSE**: For real-time data push from backend to frontend.
 
 ### Backend:
-- **Rust**: Backend language for high performance and memory safety.
-- **Actix Web**: Web framework for building APIs and handling requests in Rust.
-- **Tokio**: Asynchronous runtime for Rust, enabling real-time data handling.
-- **Redis**: Pub/Sub messaging for real-time communication between the backend and frontend.
-- **Docker**: Containerization to streamline deployment.
+- **Rust**: Backend programming language for high performance.
+- **Actix Web**: Framework for building APIs and handling requests.
+- **Tokio**: Asynchronous runtime enabling real-time data handling.
+- **Redis**: Used for Pub/Sub messaging and caching.
+- **Docker**: For containerization and deployment.
 
-### Data Visualization:
-- **WebSocket / SSE**: For real-time data push from backend to frontend.
 
 ## File Structure
 
-/frontend
-  ├── /app
-  │   ├── /components
-  │   │   ├── /3DGraphVisualization
-  │   │   │   └── Visualization.tsx
-  │   │   ├── /Dashboard
-  │   │   │   ├── Row1.tsx
-  │   │   │   ├── Row2.tsx
-  │   │   │   ├── Row3.tsx
-  │   │   │   └── index.tsx
-  │   │   ├── /ui
-  │   │   │   ├── CryptoButton.tsx
-  │   │   │   ├── Globedemo.tsx
-  │   │   │   ├── Header.tsx
-  │   │   │   └── WorldMapDemo.tsx
-  │   ├── /pages
-  │   │   ├── _app.tsx
-  │   │   └── index.tsx
-  │   ├── /types
-  │   │   └── types.d.tsx
-  │   ├── /api
-  │   │   ├── constant.ts
-  │   │   └── api.ts
-  │   ├── /hooks
-  │   │   ├── useStore.ts
-  │   │   ├── use-scroll.ts
-  │   │   └── useWebSocket.ts
-  ├── global.css
-  ├── page.tsx
-  ├── layout.tsx
 
-/backend
-  ├── /src
-  │   ├── /api
-  │   │   ├── /handlers
-  │   │   │   ├── bitcoin.rs
-  │   │   │   └── mod.rs
-  │   │   ├── /models
-  │   │   │   ├── bitcoin.rs
-  │   │   │   └── mod.rs
-  │   │   └── routes.rs
-  │   ├── /services
-  │   │   ├── websocket.rs
-  │   │   ├── pubsub.rs
-  │   │   └── crypto_api.rs
-  │   ├── /redis
-  │   │   ├── mod.rs
-  │   │   └── publisher.rs
-  │   ├── /utils
-  │   │   ├── config.rs
-  │   │   ├── logger.rs
-  │   │   └── errors.rs
-  │   ├── main.rs
-  │   └── lib.rs
-  ├── Dockerfile
-  ├── Cargo.toml
-  ├── .env
-  └── README.md
+
+
+## Features
+
+1. 3D Neural Network Visualization
+
+    -  Transactions appear as interconnected nodes, dynamically updated in real time.
+    - Uses 3D Force Graph and Three.js for rendering.
+
+2. Transaction Search
+    - Users can search by wallet ID for the selected cryptocurrency and view transaction details.
+
+3. Cryptocurrency Selection
+    - Filter the last 200 transactions for cryptocurrencies like Bitcoin, Ethereum, Solana, and others.
+
+4. Interactive Nodes
+    - Hover over nodes to reveal details such as wallet addresses, amounts, and timestamps.
+
 
 
 
@@ -112,15 +73,15 @@ Key Features:
 
 ## Model Architecture
 
-### Frontend
-1. **3D Globe Rendering**: The core of the visualization. It renders a dynamic 3D globe using `Three.js` with support for real-time updates (Bitcoin, Ethereum transactions). This is powered by `React Three Fiber` for smooth React integration.
-2. **Graph Visualization**: Uses `3d-force-graph` to visualize cryptocurrency transaction data as nodes on the globe, representing transactions from different cryptocurrencies. Nodes and links can be dynamically updated.
-3. **Real-Time Communication**: `WebSocket` or `SSE` is used to push transaction data from the backend to the frontend in real time.
 
-### Backend
-1. **Real-Time Data Generation**: The backend simulates cryptocurrency transactions using `Actix Web` to serve data to clients. It also uses `Redis` for real-time communication with the frontend via `WebSocket` or `SSE`.
-2. **API Layer**: Exposes API endpoints to fetch cryptocurrency transactions and handle custom filters for different blockchains (Bitcoin, Ethereum, etc.).
-3. **Data Simulation & Streaming**: The backend leverages `Tokio` for asynchronous operations to simulate transactions and stream them to the frontend.
+
+
+
+
+
+
+
+
 
 ## Installation
 
@@ -157,3 +118,31 @@ Key Features:
 5. **Open the app in your browser at**
 
     *http://localhost:3000*
+
+
+
+
+## Usage
+  - Select a cryptocurrency from the dropdown menu.
+  - View the latest 200 transactions as nodes in the visualization.
+  - Hover over a node to see transaction details.
+  - Use the search bar to find transaction details for a specific wallet ID.
+
+
+
+## Contributing
+We welcome contributions to the CelestiaX project! To contribute:
+
+1. Fork the repository.
+2. Create a new branch (git checkout -b feature-branch).
+3. Make your changes and commit them (git commit -am 'Add feature').
+4. Push to your fork (git push origin feature-branch).
+5. Open a pull request.
+
+
+
+
+
+## License
+This project is licensed under the [MIT License](LICENSE).
+
