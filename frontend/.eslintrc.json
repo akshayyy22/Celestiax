@@ -3,7 +3,7 @@
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", 
     "react-hooks/exhaustive-deps": "warn",
-    "no-unused-vars": "warn", 
+    "no-unused-vars": "off", 
     "prefer-const": "warn"
   }
 }
