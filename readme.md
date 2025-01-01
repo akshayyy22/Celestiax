@@ -74,6 +74,7 @@ Key Features:
 ## Model Architecture
 
 
+<img width="1466" alt="6" src="https://github.com/user-attachments/assets/463ed045-c855-43d2-8332-a2b37c5ed7c4">
 
 
 
