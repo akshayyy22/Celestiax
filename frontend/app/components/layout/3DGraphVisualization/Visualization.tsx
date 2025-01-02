@@ -243,8 +243,8 @@ const GraphVisualization: React.FC = () => {
     let links = [...updatedGraphData.links];
     let currentNodes: any[] = [];
     let currentLinks: any[] = [];
-    const batchSize = 50; // Number of nodes/links to add in each batch
-    const delay = 300; // Delay in milliseconds between batches
+    const batchSize = 100; // Number of nodes/links to add in each batch
+    const delay = 500; // Delay in milliseconds between batches
 
     const addDataStep = () => {
       if (nodes.length > 0) {
