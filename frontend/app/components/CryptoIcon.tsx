@@ -2,12 +2,10 @@
 
 import { cryptoIcons } from "./ui/icons";
 
-// Define valid CryptoIds
 type CryptoId = "bitcoin" | "ethereum" | "algorand" | "tron" |
   "litecoin" | "bitcoin-cash" | "dash" | "dogecoin" |
   "binance-smart-chain" | "polygon" | "avalanche";
 
-// Define the Crypto type with CryptoId as the type for id
 interface Crypto {
   id: CryptoId;
   name: string;
@@ -15,17 +13,16 @@ interface Crypto {
 }
 
 interface CryptoIconProps {
-  cryptoId: CryptoId; // Use the defined type for cryptoId
+  cryptoId: CryptoId; 
 }
 
 export function CryptoIcon({ cryptoId }: CryptoIconProps) {
-  const Icon = cryptoIcons[cryptoId]; // No need for type assertion
+  const Icon = cryptoIcons[cryptoId]; 
 
   if (!Icon) {
-    return null; // Return null if Icon does not exist
+    return null; 
   }
 
-  // Define the icon colors for each CryptoId
   const iconColors: Record<CryptoId, string> = {
     bitcoin: "text-yellow-500",
     ethereum: "text-purple-400",
@@ -36,8 +33,8 @@ export function CryptoIcon({ cryptoId }: CryptoIconProps) {
     polygon: "text-emerald-500",
     avalanche: "text-emerald-500",
     "bitcoin-cash": "text-emerald-500",
-    tron: "text-blue-500", // Added tron
-    litecoin: "text-silver-500" // Added litecoin
+    tron: "text-blue-500", 
+    litecoin: "text-silver-500" 
   };
 
   return <Icon className={`w-4 h-4 ${iconColors[cryptoId]}`} />;
@@ -50,9 +47,7 @@ const isValidCryptoId = (id: string): id is CryptoId => {
   ].includes(id);
 };
 
-// Example usage of CryptoIcon with crypto data
 export function CrptoDropdown({ crypto }: { crypto: Crypto }) {
-  // Check if the crypto.id is a valid CryptoId before rendering CryptoIcon
   if (isValidCryptoId(crypto.id)) {
     return (
       <div className="flex items-center gap-2">
@@ -63,6 +58,5 @@ export function CrptoDropdown({ crypto }: { crypto: Crypto }) {
     );
   }
 
-  // Handle invalid CryptoId
   return <div>Invalid Crypto</div>;
 }

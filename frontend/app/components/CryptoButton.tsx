@@ -9,7 +9,6 @@ import { Card } from "@/app/components/ui/card";
 import { useCryptoStore } from "@/app/hooks/useStore"; // Import Zustand store
 import { useDebounce } from "use-debounce"; // Import use-debounce
 
-// Define the CryptoId type to restrict the value to certain strings
 type CryptoId =
   | "bitcoin"
   | "ethereum"
@@ -24,20 +23,20 @@ type CryptoId =
   | "avalanche";
 
 interface CryptoSelectorProps {
-  setLoading: (isLoading: boolean) => void; // Callback to manage global loading state
+  setLoading: (isLoading: boolean) => void;
 }
 
 export default function CryptoSelector({ setLoading }: CryptoSelectorProps) {
-  const router = useRouter(); // Initialize router
-  const { selectedCrypto, setSelectedCrypto } = useCryptoStore(); // Use Zustand to get state and setter
+  const router = useRouter();
+  const { selectedCrypto, setSelectedCrypto } = useCryptoStore(); 
   const [debouncedSelectedCrypto] = useDebounce(selectedCrypto, 300);
 
   
   const handleVisualize = async () => {
-    setLoading(true); // Activate global loading state
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate delay
-    router.push("/pages/mainpage"); // Navigate to the Home page
-    setLoading(false); // Deactivate loading state
+    setLoading(true); 
+    await new Promise((resolve) => setTimeout(resolve, 2000)); 
+    router.push("/pages/mainpage"); 
+    setLoading(false); 
   };
 
   return (
@@ -53,7 +52,7 @@ export default function CryptoSelector({ setLoading }: CryptoSelectorProps) {
       </div>
 
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <CryptoDropdown value={selectedCrypto as CryptoId} onValueChange={setSelectedCrypto} /> {/* Type casting */}
+        <CryptoDropdown value={selectedCrypto as CryptoId} onValueChange={setSelectedCrypto} /> 
         <Button
           onClick={handleVisualize}
           className="w-full sm:w-auto flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg shadow-indigo-500/20 transition-all duration-200"

@@ -9,7 +9,6 @@ import {
 } from "@/app/components/ui/select";
 import { CryptoIcon } from "./CryptoIcon";
 
-// Define the CryptoId type to restrict the value to certain strings
 type CryptoId =
   | "bitcoin"
   | "ethereum"
@@ -23,10 +22,9 @@ type CryptoId =
   | "polygon"
   | "avalanche";
 
-// Update the CryptoDropdownProps to specify CryptoId type for value and onValueChange
 interface CryptoDropdownProps {
-  value: CryptoId; // Ensure value is a valid CryptoId
-  onValueChange: (value: CryptoId) => void; // onValueChange should accept a CryptoId
+  value: CryptoId; 
+  onValueChange: (value: CryptoId) => void; 
 }
 
 export function CryptoDropdown({ value, onValueChange }: CryptoDropdownProps) {
@@ -51,11 +49,11 @@ export function CryptoDropdown({ value, onValueChange }: CryptoDropdownProps) {
         ].map((crypto) => (
           <SelectItem
             key={crypto.id}
-            value={crypto.id} // The value is set to the id, which is a CryptoId
+            value={crypto.id} 
             className="text-slate-100 focus:bg-indigo-600 cursor-pointer"
           >
             <div className="flex items-center gap-2">
-              <CryptoIcon cryptoId={crypto.id as CryptoId} /> {/* Type cast here if necessary */}
+              <CryptoIcon cryptoId={crypto.id as CryptoId} /> 
               <span>{crypto.name}</span>
               <span className="text-slate-400 text-sm">({crypto.symbol})</span>
             </div>

@@ -1,29 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic"; // Import dynamic to handle client-side rendering
+import dynamic from "next/dynamic"; 
 import { useCryptoStore } from "@/app/hooks/useStore";
 
 const GraphVisualization = dynamic(() => import("../../components/layout/3DGraphVisualization/Visualization"), { ssr: false });
 
 const Home = () => {
-  const { selectedCrypto } = useCryptoStore(); // Access Zustand store
+  const { selectedCrypto } = useCryptoStore(); 
   console.log(selectedCrypto);
 
-  const [isClient, setIsClient] = useState(false); // State to check if we are on the client side
+  const [isClient, setIsClient] = useState(false); 
 
   useEffect(() => {
-    // Ensure this is only run on the client side
     setIsClient(true);
   }, []);
 
   if (!isClient) {
-    return null; // Return nothing or a loading spinner while waiting for the client-side rendering
+    return null; 
   }
 
-  // Now you can safely use components that rely on `window` and other client-side features
   return (
     <div>
-      <GraphVisualization /> {/* This will only render on the client side */}
+      <GraphVisualization /> 
     </div>
   );
 };
