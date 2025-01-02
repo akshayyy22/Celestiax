@@ -16,6 +16,7 @@ import {
 } from "../types/types";
 
 const BASE_URL = "https://celestiax.onrender.com/api";
+// const BASE_URL = "http://0.0.0.0:8081/api";
 
 export const fetchBitcoinTransactions =
   async (): Promise<BitcoinApiResponse> => {
@@ -106,3 +107,5 @@ export const fetchWalletTransactions = async (
     throw error;
   }
 };
+
+
