@@ -18,7 +18,7 @@ CelestiaX is a real-time cryptocurrency transaction visualization platform that 
 
 ## Project Overview
 
-CelestiaX is designed to showcase the latest cryptocurrency transactions in a visually compelling manner. Users can interact with a neural network-style visualization where each node represents a transaction. The system provides an option to search wallet IDs and view detailed transaction data for specific cryptocurrencies like Bitcoin, Ethereum, and Solana.
+CelestiaX is designed to showcase the latest cryptocurrency transactions in a visually compelling manner. Users can interact with a neural network-style visualization where each node represents a transaction. The system provides an option to search wallet IDs and view detailed transaction data for specific cryptocurrencies like Bitcoin, Ethereum, and Algorand.
 
 Key Features:
 - **Real-Time Neural Network Visualization**: Transactions are visualized as interconnected nodes with dynamic updates.
@@ -104,16 +104,15 @@ Key Features:
 
 
 4. **Run the Project:**
-
+-
     *Start the backend:*
     ```bash
     cargo run 
 
- 
-
-    *Start the frontend:*
-    ```bash
-        npm run dev
+ -
+      *Start the frontend:*
+      ```bash
+      npm run dev
 
 
 5. **Open the app in your browser at**
