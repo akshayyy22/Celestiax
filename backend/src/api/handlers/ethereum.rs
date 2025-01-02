@@ -5,7 +5,7 @@ use chrono::{Utc, Duration};
 pub async fn get_ethereum_data(
     query: web::Query<crate::api::models::ethereum::EthereumQuery>,
 ) -> impl Responder {
-    let limit = query.limit.unwrap_or(300);
+    let limit = query.limit.unwrap_or(500);
     let offset = query.offset.unwrap_or(0);
     let network = query.network.clone().unwrap_or_else(|| "ethereum".to_string());
 
