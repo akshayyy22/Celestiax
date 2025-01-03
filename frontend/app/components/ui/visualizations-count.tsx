@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 
 export default function VisualizationsCount() {
-  const [count, setCount] = useState<number>(697); // Default value
+  const [count, setCount] = useState<number>(783); // Default value
 
   useEffect(() => {
     if (typeof window !== "undefined") {
