@@ -39,29 +39,30 @@ const VideoItem = ({
     </div>
   );
   
-  const videos = [
-    {
-      src: "/example-video/bitcoin-example.mov",
-      poster: "/example-photo/bitcoin-example-photo.png",
-      title: "Bitcoin",
-      repoUrl: "https://bitcoin.org/en/",
-      commits: "393,242+",
-    },
-    {
-      src: "/example-video/ethereum-example.mov",
-      poster: "/example-photo/ethereum-example-photo.png",
-      title: "Ethereum",
-      repoUrl: "https://ethereum.org/en/",
-      commits: "1.1 billion",
-    },
-    {
-      src: "/example-video/algorand-example.mov",
-      poster: "/example-photo/algorand-example-photo.png",
-      title: "Algorand",
-      repoUrl: "https://xrpl.org/",
-      commits: "1.4 million",
-    },
-  ];
+ const videos = [
+  {
+    src: "https://drive.google.com/uc?export=download&id=15-iEpEuFa1okjo43nDBxDGTM16izyv1L",
+    poster: "/example-photo/bitcoin-example-photo.png",
+    title: "Bitcoin",
+    repoUrl: "https://bitcoin.org/en/",
+    commits: "393,242+",
+  },
+  {
+    src: "https://drive.google.com/uc?export=download&id=1aQVU6C7ze1t8MA_aDsQRL1BoqbpinIxm",
+    poster: "/example-photo/ethereum-example-photo.png",
+    title: "Ethereum",
+    repoUrl: "https://ethereum.org/en/",
+    commits: "1.1 billion",
+  },
+  {
+    src: "https://drive.google.com/uc?export=download&id=1w9TsKXU0BO-tzJ5dFMEDZHyPi2RbQQhg",
+    poster: "/example-photo/algorand-example-photo.png",
+    title: "Algorand",
+    repoUrl: "https://xrpl.org/",
+    commits: "1.4 million",
+  },
+];
+
   
   export default function ExampleGenerations() {
     return (
