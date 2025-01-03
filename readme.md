@@ -2,7 +2,8 @@
 
 CelestiaX is a real-time cryptocurrency transaction visualization platform that enables users to explore dynamic visualizations of cryptocurrency transactions as a neural network. The platform offers interactive features such as transaction search by wallet ID, cryptocurrency selection, and detailed node interactions.
 
-
+## Demo Video
+[Watch the Demo Video](https://drive.google.com/file/d/1wJ18-q5DhKtWA-e5Psjr4PIjcGkXFzFU/preview)
 
 
 ## Table of Contents
@@ -59,7 +60,7 @@ Key Features:
     - Users can search by wallet ID for the selected cryptocurrency and view transaction details.
 
 3. Cryptocurrency Selection
-    - Filter the last 200 transactions for cryptocurrencies like Bitcoin, Ethereum, Solana, and others.
+    - Filter the last 200 transactions for cryptocurrencies like Bitcoin, Ethereum, algorand, and others.
 
 4. Interactive Nodes
     - Hover over nodes to reveal details such as wallet addresses, amounts, and timestamps.
